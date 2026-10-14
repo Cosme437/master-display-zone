@@ -9,6 +9,9 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
+        bakery: "bg-primary text-primary-foreground hover:bg-primary/90 rounded-md",
+        category: "bg-transparent text-muted-foreground hover:text-primary flex-col h-auto rounded-none",
+        add: "bg-accent text-primary hover:bg-primary hover:text-primary-foreground rounded-full",
         default: "bg-primary text-primary-foreground shadow hover:bg-primary/90",
         destructive: "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
         outline:
