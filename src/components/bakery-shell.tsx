@@ -12,7 +12,31 @@ export function BakeryShell({children}:{children:ReactNode}) {
   const [open,setOpen]=useState(false); const [locating,setLocating]=useState(false); const [welcomeDismissed,setWelcomeDismissed]=useState(false);
   const branch=branches.find(b=>b.id===store.branchId)??branches[0];
   const count=store.cart.reduce((n,i)=>n+i.quantity,0);
-  function locate() { if(!navigator.geolocation) return toast.error('Seu navegador não oferece localização. Escolha uma loja abaixo.'); setLocating(true); navigator.geolocation.getCurrentPosition(p=>{const closest=[...branches].sort((a,b)=>(a.latitude-p.coords.latitude)**2+(a.longitude-p.coords.longitude)**2-((b.latitude-p.coords.latitude)**2+(b.longitude-p.coords.longitude)**2))[0];store.setBranch(closest.id);setLocating(false);setOpen(false);toast.success(`Loja ${closest.name} selecionada.`);},()=>{setLocating(false);toast.error('Não foi possível localizar você. Escolha sua loja manualmente.');},{timeout:10000}); }
+  function locate() {
+    if (!navigator.geolocation) {
+      toast.error('Seu navegador não oferece localização. Escolha uma loja abaixo.');
+      return;
+    }
+    setLocating(true);
+    navigator.geolocation.getCurrentPosition(p => {
+      const closest = [...branches].sort((a,b) =>
+        (a.latitude-p.coords.latitude)**2+(a.longitude-p.coords.longitude)**2
+        -((b.latitude-p.coords.latitude)**2+(b.longitude-p.coords.longitude)**2)
+      )[0];
+      setLocating(false);
+      if (!closest) {
+        toast.error('Nenhuma loja disponível no momento.');
+        return;
+      }
+      store.setBranch(closest.id);
+      setOpen(false);
+      toast.success(`Loja ${closest.name} selecionada.`);
+    }, () => {
+      setLocating(false);
+      toast.error('Não foi possível localizar você. Escolha sua loja manualmente.');
+    }, {timeout:10000});
+  }
+  if (!branch) return <>{children}</>;
   return <>
     <div className="bg-primary text-primary-foreground text-center text-[11px] py-2.5 flex justify-center items-center gap-2"><Wheat size={13}/><span>Feito à mão. Todos os dias. Especialmente para você.</span><Heart size={11}/></div>
     <header className="bg-background border-b border-border sticky top-0 z-30">
