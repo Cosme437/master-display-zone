@@ -12,3 +12,4 @@
 - Keep bakery demo state in a shared React context with hydration-safe browser persistence because this request is a simulated frontend, not a live commerce service.
 - Keep pricing, cake options and cart calculations in a browser-safe domain module so their business rules can be tested independently.
 - Use the root route for the shared bakery shell and separate leaf routes for catalog, cake customization, cart and orders so navigation preserves the same customer state.
+- Compose the cake preview from bundled transparent photography in a dedicated presentation component; illustrative tier and flower selections travel with CakeConfig without changing established pricing.

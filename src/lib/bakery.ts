@@ -19,7 +19,7 @@ export const branches = [
   { id:'pinheiros', name:'Pinheiros', address:'Rua dos Pinheiros, 480 · São Paulo', latitude:-23.567, longitude:-46.687 },
   { id:'moema', name:'Moema', address:'Av. Moema, 310 · São Paulo', latitude:-23.602, longitude:-46.662 },
 ];
-export type CakeConfig = { shape:string; size:15|20|25; dough:string; fillings:string[]; note:string };
+export type CakeConfig = { shape:string; size:15|20|25; dough:string; fillings:string[]; note:string; tiers?:1|2; edibleFlowers?:boolean };
 export const defaultCake: CakeConfig = { shape:'Redondo', size:15, dough:'Baunilha', fillings:[], note:'' };
 export const cakeSizes = [{size:15 as const,slices:10,price:120},{size:20 as const,slices:20,price:180},{size:25 as const,slices:30,price:240}];
 export function toggleFilling(current:string[], flavor:string) { return current.includes(flavor) ? current.filter(f=>f!==flavor) : current.length<2 ? [...current,flavor] : current; }

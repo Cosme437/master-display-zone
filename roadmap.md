@@ -5,3 +5,5 @@
 - [x] Create cake customization with live totals.
 - [x] Create cart, scheduled checkout and simulated order chat.
 - [x] Verify core flows and responsive layouts.
+- [ ] Redesign the cake builder with split-screen controls and interactive cake imagery.
+- [ ] Verify customization, cart handoff and mobile layout.
