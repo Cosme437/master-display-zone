@@ -8,4 +8,5 @@ describe('Cake requirements',()=>{
  it('updates price for selected and removed fillings',()=>{expect(cakePrice({...defaultCake,fillings:['Brigadeiro','Morango']})-cakePrice({...defaultCake,fillings:['Brigadeiro']})).toBe(10);});
  it('preserves pricing with illustrative tiers',()=>{expect(cakePrice({...defaultCake,size:20,dough:'Chocolate',fillings:['Creme de Baunilha'],tiers:2})).toBe(190);});
  it('preserves pricing with illustrative edible flowers',()=>{expect(cakePrice({...defaultCake,size:20,dough:'Chocolate',fillings:['Creme de Baunilha'],edibleFlowers:true})).toBe(190);});
+ it('preserves pricing with independent berry decorations',()=>{expect(cakePrice({...defaultCake,size:20,dough:'Chocolate',fillings:['Creme de Baunilha'],redBerries:true,edibleFlowers:false})).toBe(190);});
 });

@@ -9,3 +9,5 @@
 - [x] Verify customization, cart handoff and mobile layout.
 - [x] Update the showcase to square Red Velvet with flowers and berries and visible shape controls.
 - [x] Verify tier, decoration, measurement and cart changes.
+- [ ] Update the 16:9 builder and selection-driven cake rendering with separate flowers and berries.
+- [ ] Verify all shapes, flavors, decorations and cart handoff.
