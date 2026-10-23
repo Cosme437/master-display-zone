@@ -11,3 +11,5 @@
 - [x] Verify tier, decoration, measurement and cart changes.
 - [ ] Update the 16:9 builder and selection-driven cake rendering with separate flowers and berries.
 - [ ] Verify all shapes, flavors, decorations and cart handoff.
+- [ ] Add real authenticated registration and management for branches, individuals, businesses and owners, preserving the bakery.
+- [ ] Add private customer/support conversations and role-scoped access; verify data integrity and permissions.
