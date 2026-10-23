@@ -1,37 +1,34 @@
 import type { CakeConfig } from '@/lib/bakery';
-import oneTier from '@/assets/custom-cake-one.png';
-import twoTiers from '@/assets/custom-cake-two.png';
-import flowers from '@/assets/cake-flowers.png';
-import squareOne from '@/assets/square-velvet-one.png';
-import squareTwo from '@/assets/square-velvet-two.png';
-import squareOneDecorated from '@/assets/square-velvet-one-decorated.png';
-import squareTwoDecorated from '@/assets/square-velvet-two-decorated.png';
-import { Flower2, Layers3, Ruler } from 'lucide-react';
+import fallback from '@/assets/heart-velvet-two.png';
+import { Cherry, Flower2, Layers3, Ruler } from 'lucide-react';
+
+const previews = import.meta.glob<string>('../assets/cake-variants/*.webp', { eager: true, query: '?url', import: 'default' });
+const fillingOrder = ['Creme de Baunilha', 'Brigadeiro', 'Doce de Leite', 'Morango'];
+
+export function cakeDimensions(config: CakeConfig) {
+  return config.shape === 'Redondo' ? `Ø ${config.size} cm` : `${config.size} × ${config.size} cm`;
+}
 
 export function cakePreviewImage(config: CakeConfig) {
-  if (config.shape === 'Quadrado') {
-    return config.tiers === 2
-      ? (config.edibleFlowers ? squareTwoDecorated : squareTwo)
-      : (config.edibleFlowers ? squareOneDecorated : squareOne);
-  }
-  return config.tiers === 2 ? twoTiers : oneTier;
+  const shape = config.shape === 'Quadrado' ? 'square' : config.shape === 'Coração' ? 'heart' : 'round';
+  const dough = config.dough === 'Chocolate' ? 'chocolate' : config.dough === 'Baunilha' ? 'vanilla' : 'velvet';
+  const fillings = fillingOrder.flatMap((flavor, index) => config.fillings.includes(flavor) ? [index] : []).join('-') || 'none';
+  const key = `../assets/cake-variants/${shape}-${config.tiers ?? 1}-${dough}-${fillings}-${config.edibleFlowers ? 1 : 0}${config.redBerries ? 1 : 0}.webp`;
+  return previews[key] ?? fallback;
 }
 
 export function CakePreview({ config }: { config: CakeConfig }) {
-  const square = config.shape === 'Quadrado';
-  const dimensions = square ? `${config.size} × ${config.size} cm` : `Ø ${config.size} cm`;
+  const dimensions = cakeDimensions(config);
   return <div className="cake-studio" aria-label="Prévia do bolo personalizado">
     <div className="studio-heading"><span className="eyebrow">Ateliê Maison</span><span className="studio-live"><span />Sua criação</span></div>
     <div className={`cake-stage cake-size-${config.size} cake-tiers-${config.tiers ?? 1}`}>
       <div className="cake-composition">
-        <img key={cakePreviewImage(config)} className="cake-render" src={cakePreviewImage(config)} alt={`Bolo ${square ? 'quadrado Red Velvet com cobertura branca, doce de leite e morango' : 'redondo de chocolate com creme de baunilha'}, ${config.tiers ?? 1} andar${config.tiers === 2 ? 'es' : ''}${square && config.edibleFlowers ? ', decorado com rosas, lisianthus, morangos, mirtilos e pérolas de açúcar' : ''}`} width={1024} height={1024}/>
-        {!square && config.edibleFlowers && <img className="cake-flower-decoration" src={flowers} alt="Decoração de flores comestíveis rosas" width={992} height={672}/>}
+        <img className="cake-render" src={cakePreviewImage(config)} alt={`Bolo ${config.shape}, ${config.tiers ?? 1} ${config.tiers === 2 ? 'andares' : 'andar'}, massa ${config.dough}, recheio ${config.fillings.join(' e ') || 'não selecionado'}, cobertura branca${config.edibleFlowers ? ', flores' : ''}${config.redBerries ? ', frutas vermelhas' : ''}`} width={700} height={700}/>
       </div>
       <div className="cake-measure"><span /> <p>{dimensions}</p> <span /></div>
       <div className="cake-height"><span />{config.tiers ?? 1} {config.tiers === 2 ? 'andares' : 'andar'}<span /></div>
     </div>
     <div className="studio-caption"><span className="eyebrow text-primary">Feito para celebrar</span><h2>Uma doce obra-prima.</h2><p>{config.dough} · {config.fillings.join(' + ') || 'Sem recheio selecionado'}</p></div>
-    <div className="studio-specs"><span><Layers3 size={14}/>{config.tiers ?? 1} {config.tiers === 2 ? 'andares' : 'andar'}</span><span><Ruler size={14}/>{dimensions}</span>{config.edibleFlowers && <span><Flower2 size={14}/>Flores e frutas</span>}</div>
-    <p className="studio-disclaimer">{square ? 'Inspiração de Red Velvet, doce de leite e morango.' : 'Inspiração de chocolate e baunilha.'} Outros sabores e o formato coração são ilustrativos.</p>
+    <div className="studio-specs"><span><Layers3 size={14}/>{config.tiers ?? 1} {config.tiers === 2 ? 'andares' : 'andar'}</span><span><Ruler size={14}/>{dimensions}</span>{config.edibleFlowers && <span><Flower2 size={14}/>Flores</span>}{config.redBerries && <span><Cherry size={14}/>Frutas vermelhas</span>}</div>
   </div>;
 }
