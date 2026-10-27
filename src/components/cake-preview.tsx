@@ -3,6 +3,7 @@ import fallback from '@/assets/heart-velvet-two.png';
 import { Cherry, Flower2, Layers3, Ruler } from 'lucide-react';
 
 const previews = import.meta.glob<string>('../assets/cake-variants/*.webp', { eager: true, query: '?url', import: 'default' });
+const photography = import.meta.glob<string>('../assets/cake-photography/*.webp', { eager: true, query: '?url', import: 'default' });
 const fillingOrder = ['Creme de Baunilha', 'Brigadeiro', 'Doce de Leite', 'Morango'];
 
 export function cakeDimensions(config: CakeConfig) {
@@ -13,8 +14,8 @@ export function cakePreviewImage(config: CakeConfig) {
   const shape = config.shape === 'Quadrado' ? 'square' : config.shape === 'Coração' ? 'heart' : 'round';
   const dough = config.dough === 'Chocolate' ? 'chocolate' : config.dough === 'Baunilha' ? 'vanilla' : 'velvet';
   const fillings = fillingOrder.flatMap((flavor, index) => config.fillings.includes(flavor) ? [index] : []).join('-') || 'none';
-  const key = `../assets/cake-variants/${shape}-${config.tiers ?? 1}-${dough}-${fillings}-${config.edibleFlowers ? 1 : 0}${config.redBerries ? 1 : 0}.webp`;
-  return previews[key] ?? fallback;
+  const filename = `${shape}-${config.tiers ?? 1}-${dough}-${fillings}-${config.edibleFlowers ? 1 : 0}${config.redBerries ? 1 : 0}.webp`;
+  return photography[`../assets/cake-photography/${filename}`] ?? previews[`../assets/cake-variants/${filename}`] ?? fallback;
 }
 
 export function CakePreview({ config }: { config: CakeConfig }) {
@@ -23,7 +24,7 @@ export function CakePreview({ config }: { config: CakeConfig }) {
     <div className="studio-heading"><span className="eyebrow">Ateliê Maison</span><span className="studio-live"><span />Sua criação</span></div>
     <div className={`cake-stage cake-size-${config.size} cake-tiers-${config.tiers ?? 1}`}>
       <div className="cake-composition">
-        <img className="cake-render" src={cakePreviewImage(config)} alt={`Bolo ${config.shape}, ${config.tiers ?? 1} ${config.tiers === 2 ? 'andares' : 'andar'}, massa ${config.dough}, recheio ${config.fillings.join(' e ') || 'não selecionado'}, cobertura branca${config.edibleFlowers ? ', flores' : ''}${config.redBerries ? ', frutas vermelhas' : ''}`} width={700} height={700}/>
+        <img className="cake-render" src={cakePreviewImage(config)} alt={`Bolo ${config.shape}, ${config.tiers ?? 1} ${config.tiers === 2 ? 'andares' : 'andar'}, massa ${config.dough}, recheio ${config.fillings.join(' e ') || 'não selecionado'}, cobertura branca${config.edibleFlowers ? ', flores' : ''}${config.redBerries ? ', frutas vermelhas' : ''}`} width={700} height={700} decoding="async"/>
       </div>
       <div className="cake-measure"><span /> <p>{dimensions}</p> <span /></div>
       <div className="cake-height"><span />{config.tiers ?? 1} {config.tiers === 2 ? 'andares' : 'andar'}<span /></div>
