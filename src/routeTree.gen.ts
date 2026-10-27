@@ -10,13 +10,28 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CarrinhoRouteImport } from './routes/carrinho'
 import { Route as MontarBoloRouteImport } from './routes/montar-bolo'
 import { Route as PedidosRouteImport } from './routes/pedidos'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as AuthenticatedAtendimentoRouteImport } from './routes/_authenticated/atendimento'
+import { Route as AuthenticatedContaRouteImport } from './routes/_authenticated/conta'
+import { Route as AuthenticatedGestaoRouteImport } from './routes/_authenticated/gestao'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CarrinhoRoute = CarrinhoRouteImport.update({
@@ -34,39 +49,108 @@ const PedidosRoute = PedidosRouteImport.update({
   path: '/pedidos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAtendimentoRoute =
+  AuthenticatedAtendimentoRouteImport.update({
+    id: '/atendimento',
+    path: '/atendimento',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedContaRoute = AuthenticatedContaRouteImport.update({
+  id: '/conta',
+  path: '/conta',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedGestaoRoute = AuthenticatedGestaoRouteImport.update({
+  id: '/gestao',
+  path: '/gestao',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/carrinho': typeof CarrinhoRoute
   '/montar-bolo': typeof MontarBoloRoute
   '/pedidos': typeof PedidosRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/atendimento': typeof AuthenticatedAtendimentoRoute
+  '/conta': typeof AuthenticatedContaRoute
+  '/gestao': typeof AuthenticatedGestaoRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/carrinho': typeof CarrinhoRoute
   '/montar-bolo': typeof MontarBoloRoute
   '/pedidos': typeof PedidosRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/atendimento': typeof AuthenticatedAtendimentoRoute
+  '/conta': typeof AuthenticatedContaRoute
+  '/gestao': typeof AuthenticatedGestaoRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
   '/carrinho': typeof CarrinhoRoute
   '/montar-bolo': typeof MontarBoloRoute
   '/pedidos': typeof PedidosRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/_authenticated/atendimento': typeof AuthenticatedAtendimentoRoute
+  '/_authenticated/conta': typeof AuthenticatedContaRoute
+  '/_authenticated/gestao': typeof AuthenticatedGestaoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/carrinho' | '/montar-bolo' | '/pedidos'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/carrinho'
+    | '/montar-bolo'
+    | '/pedidos'
+    | '/reset-password'
+    | '/atendimento'
+    | '/conta'
+    | '/gestao'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/carrinho' | '/montar-bolo' | '/pedidos'
-  id: '__root__' | '/' | '/carrinho' | '/montar-bolo' | '/pedidos'
+  to:
+    | '/'
+    | '/auth'
+    | '/carrinho'
+    | '/montar-bolo'
+    | '/pedidos'
+    | '/reset-password'
+    | '/atendimento'
+    | '/conta'
+    | '/gestao'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/carrinho'
+    | '/montar-bolo'
+    | '/pedidos'
+    | '/reset-password'
+    | '/_authenticated/atendimento'
+    | '/_authenticated/conta'
+    | '/_authenticated/gestao'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
   CarrinhoRoute: typeof CarrinhoRoute
   MontarBoloRoute: typeof MontarBoloRoute
   PedidosRoute: typeof PedidosRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -76,6 +160,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/carrinho': {
@@ -99,14 +197,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PedidosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/atendimento': {
+      id: '/_authenticated/atendimento'
+      path: '/atendimento'
+      fullPath: '/atendimento'
+      preLoaderRoute: typeof AuthenticatedAtendimentoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/conta': {
+      id: '/_authenticated/conta'
+      path: '/conta'
+      fullPath: '/conta'
+      preLoaderRoute: typeof AuthenticatedContaRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/gestao': {
+      id: '/_authenticated/gestao'
+      path: '/gestao'
+      fullPath: '/gestao'
+      preLoaderRoute: typeof AuthenticatedGestaoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAtendimentoRoute: typeof AuthenticatedAtendimentoRoute
+  AuthenticatedContaRoute: typeof AuthenticatedContaRoute
+  AuthenticatedGestaoRoute: typeof AuthenticatedGestaoRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAtendimentoRoute: AuthenticatedAtendimentoRoute,
+  AuthenticatedContaRoute: AuthenticatedContaRoute,
+  AuthenticatedGestaoRoute: AuthenticatedGestaoRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
   CarrinhoRoute: CarrinhoRoute,
   MontarBoloRoute: MontarBoloRoute,
   PedidosRoute: PedidosRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -14,16 +14,365 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      branch_access: {
+        Row: {
+          branch_id: string
+          user_id: string
+        }
+        Insert: {
+          branch_id: string
+          user_id: string
+        }
+        Update: {
+          branch_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "branch_access_branch_id_fkey"
+            columns: ["branch_id"]
+            isOneToOne: false
+            referencedRelation: "registrations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "branch_access_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      conversation_reads: {
+        Row: {
+          conversation_id: string
+          last_read_at: string
+          user_id: string
+        }
+        Insert: {
+          conversation_id: string
+          last_read_at?: string
+          user_id: string
+        }
+        Update: {
+          conversation_id?: string
+          last_read_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "conversation_reads_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "conversation_reads_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      conversations: {
+        Row: {
+          assigned_to: string | null
+          branch_id: string | null
+          client_id: string
+          created_at: string
+          id: string
+          status: string
+          subject: string
+          updated_at: string
+        }
+        Insert: {
+          assigned_to?: string | null
+          branch_id?: string | null
+          client_id: string
+          created_at?: string
+          id?: string
+          status?: string
+          subject?: string
+          updated_at?: string
+        }
+        Update: {
+          assigned_to?: string | null
+          branch_id?: string | null
+          client_id?: string
+          created_at?: string
+          id?: string
+          status?: string
+          subject?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "conversations_assigned_to_fkey"
+            columns: ["assigned_to"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "conversations_branch_id_fkey"
+            columns: ["branch_id"]
+            isOneToOne: false
+            referencedRelation: "registrations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "conversations_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      messages: {
+        Row: {
+          body: string
+          conversation_id: string
+          created_at: string
+          id: string
+          sender_id: string
+        }
+        Insert: {
+          body: string
+          conversation_id: string
+          created_at?: string
+          id?: string
+          sender_id: string
+        }
+        Update: {
+          body?: string
+          conversation_id?: string
+          created_at?: string
+          id?: string
+          sender_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      owner_relationships: {
+        Row: {
+          linked_id: string
+          owner_id: string
+        }
+        Insert: {
+          linked_id: string
+          owner_id: string
+        }
+        Update: {
+          linked_id?: string
+          owner_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "owner_relationships_linked_id_fkey"
+            columns: ["linked_id"]
+            isOneToOne: false
+            referencedRelation: "registrations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "owner_relationships_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "registrations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          display_name: string
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string
+          id: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string
+          id?: string
+        }
+        Relationships: []
+      }
+      registrations: {
+        Row: {
+          active: boolean
+          address: string
+          birth_date: string | null
+          branch_id: string | null
+          category: string
+          code: string | null
+          contact_name: string | null
+          created_at: string
+          document: string | null
+          email: string
+          id: string
+          job_title: string | null
+          name: string
+          phone: string
+          state_registration: string | null
+          trade_name: string | null
+          updated_at: string
+          user_id: string | null
+          whatsapp: string | null
+        }
+        Insert: {
+          active?: boolean
+          address?: string
+          birth_date?: string | null
+          branch_id?: string | null
+          category: string
+          code?: string | null
+          contact_name?: string | null
+          created_at?: string
+          document?: string | null
+          email: string
+          id?: string
+          job_title?: string | null
+          name: string
+          phone: string
+          state_registration?: string | null
+          trade_name?: string | null
+          updated_at?: string
+          user_id?: string | null
+          whatsapp?: string | null
+        }
+        Update: {
+          active?: boolean
+          address?: string
+          birth_date?: string | null
+          branch_id?: string | null
+          category?: string
+          code?: string | null
+          contact_name?: string | null
+          created_at?: string
+          document?: string | null
+          email?: string
+          id?: string
+          job_title?: string | null
+          name?: string
+          phone?: string
+          state_registration?: string | null
+          trade_name?: string | null
+          updated_at?: string
+          user_id?: string | null
+          whatsapp?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "registrations_branch_id_fkey"
+            columns: ["branch_id"]
+            isOneToOne: false
+            referencedRelation: "registrations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "registrations_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      can_read_conversation: {
+        Args: { conversation: string; who: string }
+        Returns: boolean
+      }
+      can_read_support_profile: {
+        Args: { target: string; who: string }
+        Returns: boolean
+      }
+      has_role: {
+        Args: { wanted: Database["public"]["Enums"]["app_role"]; who: string }
+        Returns: boolean
+      }
+      manage_access: {
+        Args: {
+          branches?: string[]
+          target_user: string
+          wanted_role: Database["public"]["Enums"]["app_role"]
+        }
+        Returns: undefined
+      }
+      manages_branch: {
+        Args: { branch: string; who: string }
+        Returns: boolean
+      }
+      public_branch_directory: {
+        Args: never
+        Returns: {
+          id: string
+          name: string
+        }[]
+      }
+      save_registration: {
+        Args: { links?: string[]; payload: Json; record_id: string }
+        Returns: string
+      }
+      set_registration_active: {
+        Args: { enabled: boolean; record_id: string }
+        Returns: undefined
+      }
+      support_action: {
+        Args: { action: string; conversation?: string; payload?: Json }
+        Returns: string
+      }
+      valid_document: {
+        Args: { kind: string; value: string }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "agent" | "client" | "branch_manager"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +499,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "agent", "client", "branch_manager"],
+    },
   },
 } as const
