@@ -16,7 +16,9 @@ import { Route as CarrinhoRouteImport } from './routes/carrinho'
 import { Route as MontarBoloRouteImport } from './routes/montar-bolo'
 import { Route as PedidosRouteImport } from './routes/pedidos'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as AuthenticatedAtendimentoRouteImport } from './routes/_authenticated/atendimento'
 import { Route as AuthenticatedContaRouteImport } from './routes/_authenticated/conta'
+import { Route as AuthenticatedGestaoRouteImport } from './routes/_authenticated/gestao'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -52,9 +54,20 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
   path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAtendimentoRoute =
+  AuthenticatedAtendimentoRouteImport.update({
+    id: '/atendimento',
+    path: '/atendimento',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedContaRoute = AuthenticatedContaRouteImport.update({
   id: '/conta',
   path: '/conta',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedGestaoRoute = AuthenticatedGestaoRouteImport.update({
+  id: '/gestao',
+  path: '/gestao',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 
@@ -65,7 +78,9 @@ export interface FileRoutesByFullPath {
   '/montar-bolo': typeof MontarBoloRoute
   '/pedidos': typeof PedidosRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/atendimento': typeof AuthenticatedAtendimentoRoute
   '/conta': typeof AuthenticatedContaRoute
+  '/gestao': typeof AuthenticatedGestaoRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -74,7 +89,9 @@ export interface FileRoutesByTo {
   '/montar-bolo': typeof MontarBoloRoute
   '/pedidos': typeof PedidosRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/atendimento': typeof AuthenticatedAtendimentoRoute
   '/conta': typeof AuthenticatedContaRoute
+  '/gestao': typeof AuthenticatedGestaoRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -85,7 +102,9 @@ export interface FileRoutesById {
   '/montar-bolo': typeof MontarBoloRoute
   '/pedidos': typeof PedidosRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/_authenticated/atendimento': typeof AuthenticatedAtendimentoRoute
   '/_authenticated/conta': typeof AuthenticatedContaRoute
+  '/_authenticated/gestao': typeof AuthenticatedGestaoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -96,7 +115,9 @@ export interface FileRouteTypes {
     | '/montar-bolo'
     | '/pedidos'
     | '/reset-password'
+    | '/atendimento'
     | '/conta'
+    | '/gestao'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -105,7 +126,9 @@ export interface FileRouteTypes {
     | '/montar-bolo'
     | '/pedidos'
     | '/reset-password'
+    | '/atendimento'
     | '/conta'
+    | '/gestao'
   id:
     | '__root__'
     | '/'
@@ -115,7 +138,9 @@ export interface FileRouteTypes {
     | '/montar-bolo'
     | '/pedidos'
     | '/reset-password'
+    | '/_authenticated/atendimento'
     | '/_authenticated/conta'
+    | '/_authenticated/gestao'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -179,6 +204,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/atendimento': {
+      id: '/_authenticated/atendimento'
+      path: '/atendimento'
+      fullPath: '/atendimento'
+      preLoaderRoute: typeof AuthenticatedAtendimentoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/conta': {
       id: '/_authenticated/conta'
       path: '/conta'
@@ -186,15 +218,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedContaRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/gestao': {
+      id: '/_authenticated/gestao'
+      path: '/gestao'
+      fullPath: '/gestao'
+      preLoaderRoute: typeof AuthenticatedGestaoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAtendimentoRoute: typeof AuthenticatedAtendimentoRoute
   AuthenticatedContaRoute: typeof AuthenticatedContaRoute
+  AuthenticatedGestaoRoute: typeof AuthenticatedGestaoRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAtendimentoRoute: AuthenticatedAtendimentoRoute,
   AuthenticatedContaRoute: AuthenticatedContaRoute,
+  AuthenticatedGestaoRoute: AuthenticatedGestaoRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
