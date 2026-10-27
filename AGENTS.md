@@ -13,3 +13,5 @@
 - Keep pricing, cake options and cart calculations in a browser-safe domain module so their business rules can be tested independently.
 - Use the root route for the shared bakery shell and separate leaf routes for catalog, cake customization, cart and orders so navigation preserves the same customer state.
 - Compose selection-driven cake previews from bundled photographic variants in a dedicated presentation component; tiers and independent flower and berry flags travel with CakeConfig without changing established pricing.
+- Keep real registrations and support separate from the simulated commerce state; use authenticated server functions and database-enforced RPC permissions for private mutations and reads.
+- Assign new accounts the client role only; elevated access requires an existing administrator, and initial administrator provisioning must be explicitly authorized for a named account.
