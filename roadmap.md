@@ -14,3 +14,4 @@
 - [x] Add real authenticated registration and management for branches, individuals, businesses and owners, preserving the bakery.
 - [x] Add private customer/support conversations and role-scoped access; verify data integrity and permissions.
 - [ ] Provision the first real administrator — awaiting an explicitly authorized, registered account.
+- [ ] Refine the cake photography with organically integrated flowers, berries and detailed cutaway layers; verify selection changes and cart handoff.
