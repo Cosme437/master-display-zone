@@ -14,9 +14,10 @@ export const loadAccount = createServerFn({method:'GET'}).middleware([requireSup
   if (branches.error) throw new Error(branches.error.message);
   return {profile:profile.data, roles:roles.data.map(r=>r.role), branches:branches.data};
 });
-const filterSchema = z.object({category:z.enum(['branch','person','business','owner']), search:z.string().max(100).default(''), status:z.enum(['all','active','inactive']).default('all'), branch:z.string().default(''), page:z.number().int().min(0).default(0)});
+const filterSchema = z.object({category:z.enum(['branch','person','business','owner']), search:z.string().max(100).default(''), status:z.enum(['all','active','inactive']).default('all'), branch:z.string().default(''), page:z.number().int().min(0).default(0),own:z.boolean().optional()});
 export const listRegistrations = createServerFn({method:'POST'}).middleware([requireSupabaseAuth]).inputValidator(filterSchema).handler(async ({data,context}) => {
   let query = context.supabase.from('registrations').select('*',{count:'exact'}).eq('category',data.category).order('created_at',{ascending:false});
+  if(data.own) query=query.eq('user_id',context.userId);
   const search=data.search.replace(/[^\p{L}\p{N}@. _-]/gu,'').trim();
   if (search) query=query.or(['name','document','email','code','trade_name'].map(field=>`${field}.ilike.%${search}%`).join(','));
   if (data.status!=='all') query=query.eq('active',data.status==='active');
@@ -59,9 +60,15 @@ export const loadSupport = createServerFn({method:'GET'}).middleware([requireSup
   return {conversations:conversations??[],profiles:profiles??[],reads:reads??[]};
 });
 export const loadMessages = createServerFn({method:'POST'}).middleware([requireSupabaseAuth]).inputValidator(z.object({id:z.string().uuid()})).handler(async ({data,context})=>{
-  const {data:messages,error}=await context.supabase.from('messages').select('*').eq('conversation_id',data.id).order('created_at',{ascending:false}).limit(500); if(error) throw new Error(error.message);
+  const messages = [];
+  for(let offset=0;;offset+=500){
+    const {data:batch,error}=await context.supabase.from('messages').select('*').eq('conversation_id',data.id).order('created_at',{ascending:true}).order('id').range(offset,offset+499);
+    if(error) throw new Error(error.message);
+    messages.push(...(batch??[]));
+    if(!batch||batch.length<500) break;
+  }
   const {data:reads,error:re}=await context.supabase.from('conversation_reads').select('*').eq('conversation_id',data.id); if(re) throw new Error(re.message);
-  return {messages:(messages??[]).reverse(),reads:reads??[]};
+  return {messages,reads:reads??[]};
 });
 export const supportAction = createServerFn({method:'POST'}).middleware([requireSupabaseAuth]).inputValidator(z.object({action:z.enum(['create','send','read','status','assign']),id:z.string().uuid().optional(),payload:z.object({subject:z.string().trim().min(1).max(160).optional(),branch_id:z.string().uuid().or(z.literal('')).optional(),body:z.string().trim().min(1).max(4000).optional(),status:z.enum(['open','in_progress','closed']).optional(),assigned_to:z.string().uuid().or(z.literal('')).optional()}).default({})})).handler(async ({data,context})=>{
   const {data:id,error}=await context.supabase.rpc('support_action',{action:data.action,...(data.id?{conversation:data.id}:{}),payload:data.payload}); if(error) throw new Error(error.message); return id;
