@@ -327,6 +327,10 @@ export type Database = {
         Args: { conversation: string; who: string }
         Returns: boolean
       }
+      can_read_support_profile: {
+        Args: { target: string; who: string }
+        Returns: boolean
+      }
       has_role: {
         Args: { wanted: Database["public"]["Enums"]["app_role"]; who: string }
         Returns: boolean
