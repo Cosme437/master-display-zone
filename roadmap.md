@@ -16,4 +16,4 @@
 - [ ] Provision the first real administrator — awaiting an explicitly authorized, registered account.
 - [x] Refine nine two-tier cake photographs across all shapes and batters, with integrated flowers, berries and dulce de leche/strawberry cutaways; verify selection changes, mobile layout and persistent cart handoff. Other combinations retain their existing previews.
 - [x] Refine the nine photographed cutaways with pristine sponge and clearly separated fillings, without color bleeding; verify selection and persistent cart imagery.
-- [ ] Add outer frosting choices with matching cake previews and persistent cart details; verify selection and layout.
+- [x] Add natural-cream and blush-pink frosting choices with nine matching cake previews and persistent cart details; verify selection, reset, availability and desktop/mobile layout.
