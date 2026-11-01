@@ -15,3 +15,5 @@
 - Compose selection-driven cake previews from bundled photographic variants in a dedicated presentation component, preferring refined whole-cake photographs for exact configuration matches to keep decorations physically integrated; tiers and independent flower and berry flags travel with CakeConfig without changing established pricing.
 - Keep real registrations and support separate from the simulated commerce state; use authenticated server functions and database-enforced RPC permissions for private mutations and reads.
 - Assign new accounts the client role only; elevated access requires an existing administrator, and initial administrator provisioning must be explicitly authorized for a named account.
+
+- Outer frosting travels in CakeConfig with a legacy ivory default; enable photographic finishes only for matching configuration assets so the preview and cart never misrepresent a selected exterior.
