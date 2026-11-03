@@ -12,9 +12,10 @@ export function cakeDimensions(config: CakeConfig) {
   return config.shape === 'Redondo' ? `Ø ${config.size} cm` : `${config.size} × ${config.size} cm`;
 }
 
-export function cakePreviewImage(config: CakeConfig) {
+export function cakePreviewImage(config: CakeConfig): string {
   const key = catalogKey(config);
-  if (key && catalog[`../assets/cake-catalog/${key}.webp`]) return catalog[`../assets/cake-catalog/${key}.webp`];
+  const catalogImage = key ? catalog[`../assets/cake-catalog/${key}.webp`] : undefined;
+  if (catalogImage) return catalogImage;
   const shape = config.shape === 'Quadrado' ? 'square' : config.shape === 'Coração' ? 'heart' : 'round';
   const dough = config.dough === 'Chocolate' ? 'chocolate' : config.dough === 'Baunilha' ? 'vanilla' : 'velvet';
   const fillings = fillingOrder.flatMap((flavor, index) => config.fillings.includes(flavor) ? [index] : []).join('-') || 'none';
