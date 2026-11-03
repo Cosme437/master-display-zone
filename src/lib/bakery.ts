@@ -49,5 +49,5 @@ export const pageHead = (title:string, description:string) => ({ meta:[{title:`$
 export function catalogConfig(key:string):CakeConfig {
   const [shape, tiers, dough, ...rest] = key.split('-');
   const frosting = rest.pop() as CakeFrosting;
-  return { shape: shape==='square'?'Quadrado':shape==='heart'?'Coração':'Redondo', size:20, tiers: Number(tiers) as 1|2, dough: dough==='chocolate'?'Chocolate':dough==='vanilla'?'Baunilha':'Red Velvet', fillings: rest.map(i=>cakeFillingOrder[Number(i)]), note:'', edibleFlowers:true, redBerries:true, frosting };
+  return { shape: shape==='square'?'Quadrado':shape==='heart'?'Coração':'Redondo', size:20, tiers: Number(tiers) as 1|2, dough: dough==='chocolate'?'Chocolate':dough==='vanilla'?'Baunilha':'Red Velvet', fillings: rest.map(i=>cakeFillingOrder[Number(i)]).filter((f):f is string=>Boolean(f)), note:'', edibleFlowers:true, redBerries:true, frosting };
 }
