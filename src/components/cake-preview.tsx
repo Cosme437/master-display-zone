@@ -1,8 +1,6 @@
 import { cakeFrostingName, catalogKey, supportsRoseFrosting, type CakeConfig } from '@/lib/bakery';
-import fallback from '@/assets/heart-velvet-two.png';
 import { Cherry, Flower2, Layers3, Ruler } from 'lucide-react';
 
-const previews = import.meta.glob<string>('../assets/cake-variants/*.webp', { eager: true, query: '?url', import: 'default' });
 const photography = import.meta.glob<string>('../assets/cake-photography/*.webp', { eager: true, query: '?url', import: 'default' });
 const frostings = import.meta.glob<string>('../assets/cake-frosting/*.webp', { eager: true, query: '?url', import: 'default' });
 const catalog = import.meta.glob<string>('../assets/cake-catalog/*.webp', { eager: true, query: '?url', import: 'default' });
@@ -24,7 +22,7 @@ export function cakePreviewImage(config: CakeConfig): string {
     const rose = frostings[`../assets/cake-frosting/${filename.replace('.webp', '-rose.webp')}`];
     if (rose) return rose;
   }
-  return photography[`../assets/cake-photography/${filename}`] ?? previews[`../assets/cake-variants/${filename}`] ?? fallback;
+  return photography[`../assets/cake-photography/${filename}`] ?? `/cake-variants/${filename}`;
 }
 
 export function CakePreview({ config }: { config: CakeConfig }) {
