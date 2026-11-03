@@ -234,3 +234,12 @@
 .chat-compose { display:flex; gap:12px; padding:18px; border-top:1px solid var(--border); align-items:center; }
 .chat-compose textarea { flex:1; min-width:0; padding:10px; outline:none; resize:none; font-size:12px; border:1px solid var(--border); border-radius:6px; }
 @media(max-width:760px) { .registration-fields,.record-details { grid-template-columns:1fr; } .dashboard-stats { grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; } .registry-filters { grid-template-columns:1fr; } .registry-table { min-width:720px; } .support-layout { display:block; } .support-sidebar { border-right:0; padding:20px 0; } .support-chat { display:none; } .has-selected .support-sidebar { display:none; } .has-selected .support-chat { display:flex; min-height:600px; } .chat-messages { padding:16px; } .support-message { max-width:90%; } .platform-page { padding-block:26px; } .registry-dialog { padding:20px; } .account-shortcuts { right:16px; bottom:16px; } }
+.mockup-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+.mockup-card { border:1px solid var(--border); border-radius:14px; background:var(--card); padding:10px; text-align:left; cursor:pointer; transition:border-color .2s, transform .2s; }
+.mockup-card:hover { border-color:var(--primary); transform:translateY(-2px); }
+.mockup-card img { width:100%; aspect-ratio:16/9; object-fit:cover; border-radius:8px; display:block; background:var(--studio); }
+.mockup-card-label { display:block; font-size:11px; font-weight:500; margin-top:8px; }
+.mockup-dialog { max-width:min(1100px,92vw); padding:18px; }
+.mockup-full { width:100%; border-radius:10px; display:block; }
+@media(min-width:900px) { .mockup-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } }
+@media(min-width:1400px) { .mockup-grid { grid-template-columns:repeat(4,minmax(0,1fr)); } }
