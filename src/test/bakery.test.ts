@@ -11,4 +11,10 @@ describe('Cake requirements',()=>{
  it('preserves pricing with illustrative tiers',()=>{expect(cakePrice({...defaultCake,size:20,dough:'Chocolate',fillings:['Creme de Baunilha'],tiers:2})).toBe(190);});
  it('preserves pricing with illustrative edible flowers',()=>{expect(cakePrice({...defaultCake,size:20,dough:'Chocolate',fillings:['Creme de Baunilha'],edibleFlowers:true})).toBe(190);});
  it('preserves pricing with independent berry decorations',()=>{expect(cakePrice({...defaultCake,size:20,dough:'Chocolate',fillings:['Creme de Baunilha'],redBerries:true,edibleFlowers:false})).toBe(190);});
+});import { supportsFrosting, effectiveFrosting, catalogKey } from '@/lib/bakery';
+describe('catalog frostings',()=>{
+ const base={...defaultCake,shape:'Coração',tiers:2 as const,dough:'Chocolate',fillings:['Creme de Baunilha'],edibleFlowers:true,redBerries:true};
+ it('enables chocolate frosting only for photographed combinations',()=>{expect(supportsFrosting(base,'chocolate')).toBe(true);expect(supportsFrosting({...base,dough:'Baunilha'},'chocolate')).toBe(false);});
+ it('falls back to white when decorations are removed',()=>{expect(catalogKey({...base,edibleFlowers:false},'chocolate')).toBeNull();expect(effectiveFrosting({...base,frosting:'chocolate',redBerries:false})).toBe('ivory');});
+ it('keeps price unchanged by frosting',()=>{expect(cakePrice({...base,frosting:'naked'})).toBe(cakePrice({...base,frosting:'chocolate'}));});
 });
