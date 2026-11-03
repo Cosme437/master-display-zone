@@ -17,3 +17,4 @@
 - Assign new accounts the client role only; elevated access requires an existing administrator, and initial administrator provisioning must be explicitly authorized for a named account.
 
 - Outer frosting travels in CakeConfig with a legacy ivory default; enable photographic finishes only for matching configuration assets so the preview and cart never misrepresent a selected exterior.
+- Isolated catalog cake photos live as transparent webp keyed by catalogKey in the domain module; catalog frostings unlock only when that key exists, so new photos need only an image plus a catalogCakes entry.
