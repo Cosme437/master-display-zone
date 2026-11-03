@@ -2,10 +2,12 @@ import { createFileRoute, Link } from '@tanstack/react-router';
 import { useState } from 'react';
 import { ArrowLeft, ArrowRight, Check, Cherry, ChevronDown, Circle, Flower2, Heart, Layers3, RotateCcw, ShoppingBag, Square } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Slider } from '@/components/ui/slider';
 import { CakePreview, cakePreviewImage, cakeCatalogImage, cakeDimensions } from '@/components/cake-preview';
 import { useBakery } from '@/components/bakery-store';
 import { cakePrice, cakeSizes, cakeFrostings, cakeFrostingName, supportsRoseFrosting, supportsFrosting, effectiveFrosting, money, pageHead, catalogCakes, catalogConfig, toggleFilling, type CakeConfig } from '@/lib/bakery';
+import { cakeMockups, type CakeMockup } from '@/lib/cake-mockups';
 import { toast } from 'sonner';
 
 export const Route = createFileRoute('/montar-bolo')({ head: () => pageHead('Monte seu bolo', 'Crie seu bolo Maison: escolha formato, andares, massa, recheios, cobertura, flores e frutas em um ateliê de sabores.'), component: CakeBuilder });
@@ -14,6 +16,7 @@ const showcase: CakeConfig = { shape: 'Coração', size: 20, dough: 'Red Velvet'
 function CakeBuilder() {
   const [config, setConfig] = useState<CakeConfig>(showcase);
   const store = useBakery();
+  const [openMockup, setOpenMockup] = useState<CakeMockup | null>(null);
   const set = <K extends keyof CakeConfig>(key: K, value: CakeConfig[K]) => setConfig(c => {
     const next = { ...c, [key]: value };
     return next.frosting && !supportsFrosting(next, next.frosting) ? { ...next, frosting: 'ivory' } : next;
@@ -49,5 +52,17 @@ function CakeBuilder() {
     <section className="page-width mt-12 mb-16" aria-labelledby="catalogo-bolos"><h2 id="catalogo-bolos" className="text-2xl font-semibold mb-1">Nosso catálogo de bolos</h2><p className="text-sm text-muted-foreground mb-6">Toque em um bolo para montá-lo acima.</p>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">{catalogCakes.map(key => { const c = catalogConfig(key); return <button key={key} type="button" className="rounded-2xl border border-border bg-card p-3 text-left transition hover:border-primary" onClick={() => { setConfig(c); window.scrollTo({ top: 0, behavior: 'smooth' }); }}><img src={cakeCatalogImage(key)} alt={`Bolo ${c.shape}, ${c.dough}, ${c.fillings.join(' e ')}`} loading="lazy" className="w-full aspect-square object-contain"/><span className="block text-xs font-medium mt-2">{c.tiers} {c.tiers===2?'andares':'andar'} · {c.shape}</span><span className="block text-[11px] text-muted-foreground">{c.dough} · {c.fillings.join(' + ')} · {cakeFrostings.find(f=>f.id===c.frosting)?.name}</span></button>; })}</div>
     </section>
+    <section className="page-width mt-4 mb-16" aria-labelledby="telas-bolos"><h2 id="telas-bolos" className="text-2xl font-semibold mb-1">Veja cada bolo montado</h2><p className="text-sm text-muted-foreground mb-6">Toque em uma tela para abrir o bolo em tamanho grande.</p>
+      <div className="mockup-grid">{cakeMockups.map(mockup => <button key={mockup.key} type="button" className="mockup-card" onClick={() => setOpenMockup(mockup)}><img src={mockup.thumb} alt={`Tela do bolo ${mockup.config.shape}, ${mockup.config.dough}, ${mockup.config.fillings.join(' e ')}`} loading="lazy" width={760} height={428}/><span className="mockup-card-label">{String(mockup.number).padStart(2, '0')} · {mockup.config.tiers} {mockup.config.tiers === 2 ? 'andares' : 'andar'} · {mockup.config.shape}</span></button>)}</div>
+    </section>
+    <Dialog open={Boolean(openMockup)} onOpenChange={open => { if (!open) setOpenMockup(null); }}>
+      <DialogContent className="mockup-dialog">
+        {openMockup && <>
+          <DialogHeader><DialogTitle>Bolo {openMockup.config.shape}, {openMockup.config.dough}</DialogTitle><DialogDescription>{openMockup.config.tiers} {openMockup.config.tiers === 2 ? 'andares' : 'andar'} · {openMockup.config.fillings.join(' + ')}</DialogDescription></DialogHeader>
+          <img src={openMockup.full} alt={`Tela completa do bolo ${openMockup.config.shape}, ${openMockup.config.dough}, ${openMockup.config.fillings.join(' e ')}`} width={1600} height={900} className="mockup-full"/>
+          <Button variant="bakery" className="w-full h-11" onClick={() => { setConfig(openMockup.config); setOpenMockup(null); window.scrollTo({ top: 0, behavior: 'smooth' }); }}><ShoppingBag size={16}/>Montar este bolo</Button>
+        </>}
+      </DialogContent>
+    </Dialog>
   </main>;
 }
