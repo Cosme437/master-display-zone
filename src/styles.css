@@ -127,6 +127,7 @@
 .swatch-chocolate { background:var(--chocolate); }
 .swatch-vanilla { background:var(--vanilla); }
 .swatch-rose { background:var(--rose); }
+.swatch-naked { background:linear-gradient(180deg,var(--vanilla) 0 30%,var(--secondary) 30% 45%,var(--vanilla) 45% 70%,var(--secondary) 70%); }
 .frosting-choice { font-size:11px; padding:10px; gap:9px; white-space:normal; }
 .frosting-choice .flavor-swatch { flex-shrink:0; }
 .swatch-velvet { background:var(--velvet); }
