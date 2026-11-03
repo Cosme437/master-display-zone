@@ -1,10 +1,11 @@
-import { cakeFrostingName, supportsRoseFrosting, type CakeConfig } from '@/lib/bakery';
+import { cakeFrostingName, catalogKey, supportsRoseFrosting, type CakeConfig } from '@/lib/bakery';
 import fallback from '@/assets/heart-velvet-two.png';
 import { Cherry, Flower2, Layers3, Ruler } from 'lucide-react';
 
 const previews = import.meta.glob<string>('../assets/cake-variants/*.webp', { eager: true, query: '?url', import: 'default' });
 const photography = import.meta.glob<string>('../assets/cake-photography/*.webp', { eager: true, query: '?url', import: 'default' });
 const frostings = import.meta.glob<string>('../assets/cake-frosting/*.webp', { eager: true, query: '?url', import: 'default' });
+const catalog = import.meta.glob<string>('../assets/cake-catalog/*.webp', { eager: true, query: '?url', import: 'default' });
 const fillingOrder = ['Creme de Baunilha', 'Brigadeiro', 'Doce de Leite', 'Morango'];
 
 export function cakeDimensions(config: CakeConfig) {
@@ -12,6 +13,8 @@ export function cakeDimensions(config: CakeConfig) {
 }
 
 export function cakePreviewImage(config: CakeConfig) {
+  const key = catalogKey(config);
+  if (key && catalog[`../assets/cake-catalog/${key}.webp`]) return catalog[`../assets/cake-catalog/${key}.webp`];
   const shape = config.shape === 'Quadrado' ? 'square' : config.shape === 'Coração' ? 'heart' : 'round';
   const dough = config.dough === 'Chocolate' ? 'chocolate' : config.dough === 'Baunilha' ? 'vanilla' : 'velvet';
   const fillings = fillingOrder.flatMap((flavor, index) => config.fillings.includes(flavor) ? [index] : []).join('-') || 'none';

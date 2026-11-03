@@ -19,10 +19,23 @@ export const branches = [
   { id:'pinheiros', name:'Pinheiros', address:'Rua dos Pinheiros, 480 · São Paulo', latitude:-23.567, longitude:-46.687 },
   { id:'moema', name:'Moema', address:'Av. Moema, 310 · São Paulo', latitude:-23.602, longitude:-46.662 },
 ];
-export type CakeFrosting = 'ivory' | 'rose';
-export const cakeFrostings = [{id:'ivory' as const,name:'Creme natural',swatch:'swatch-vanilla'}, {id:'rose' as const,name:'Rosa delicado',swatch:'swatch-rose'}];
+export type CakeFrosting = 'ivory' | 'rose' | 'chocolate' | 'naked';
+export const cakeFrostings = [{id:'ivory' as const,name:'Branca',swatch:'swatch-vanilla'}, {id:'chocolate' as const,name:'Chocolate',swatch:'swatch-chocolate'}, {id:'naked' as const,name:'Naked',swatch:'swatch-naked'}, {id:'rose' as const,name:'Rosa delicado',swatch:'swatch-rose'}];
+const cakeFillingOrder = ['Creme de Baunilha', 'Brigadeiro', 'Doce de Leite', 'Morango'];
+/** Photographed catalog combinations (always with flowers and red berries). */
+export const catalogCakes = ['heart-1-vanilla-1-2-ivory','round-1-vanilla-0-ivory','square-2-vanilla-2-naked','heart-1-vanilla-1-chocolate','round-2-vanilla-0-3-ivory','square-1-vanilla-1-2-naked','round-1-chocolate-1-chocolate','heart-2-chocolate-3-naked','square-1-chocolate-2-chocolate','round-2-chocolate-0-3-ivory','heart-1-chocolate-1-2-naked','heart-2-velvet-0-naked','square-1-velvet-2-ivory','round-2-velvet-1-chocolate','heart-1-velvet-0-3-naked','square-2-velvet-1-2-ivory','square-2-vanilla-3-chocolate','round-1-velvet-1-naked','heart-2-chocolate-0-chocolate'];
+export function catalogKey(config:CakeConfig, frosting:CakeFrosting = config.frosting ?? 'ivory') {
+  if (!config.edibleFlowers || !config.redBerries || !config.fillings.length) return null;
+  const shape = config.shape === 'Quadrado' ? 'square' : config.shape === 'Coração' ? 'heart' : 'round';
+  const dough = config.dough === 'Chocolate' ? 'chocolate' : config.dough === 'Baunilha' ? 'vanilla' : 'velvet';
+  const fillings = cakeFillingOrder.flatMap((f, i) => config.fillings.includes(f) ? [i] : []).join('-');
+  const key = `${shape}-${config.tiers ?? 1}-${dough}-${fillings}-${frosting}`;
+  return catalogCakes.includes(key) ? key : null;
+}
 export function supportsRoseFrosting(config:CakeConfig) { return config.tiers===2 && Boolean(config.edibleFlowers && config.redBerries) && config.fillings.length===2 && config.fillings.includes('Doce de Leite') && config.fillings.includes('Morango'); }
-export function cakeFrostingName(config:CakeConfig) { return config.frosting==='rose' && supportsRoseFrosting(config) ? 'Rosa delicado' : 'Creme natural'; }
+export function supportsFrosting(config:CakeConfig, frosting:CakeFrosting) { return frosting==='ivory' || (frosting==='rose' ? supportsRoseFrosting(config) : catalogKey(config, frosting)!==null); }
+export function effectiveFrosting(config:CakeConfig):CakeFrosting { const f = config.frosting ?? 'ivory'; return supportsFrosting(config, f) ? f : 'ivory'; }
+export function cakeFrostingName(config:CakeConfig) { return cakeFrostings.find(f=>f.id===effectiveFrosting(config))!.name; }
 export type CakeConfig = { shape:string; size:15|20|25; dough:string; fillings:string[]; note:string; tiers?:1|2; edibleFlowers?:boolean; redBerries?:boolean; frosting?:CakeFrosting };
 export const defaultCake: CakeConfig = { shape:'Redondo', size:15, dough:'Baunilha', fillings:[], note:'' };
 export const cakeSizes = [{size:15 as const,slices:10,price:120},{size:20 as const,slices:20,price:180},{size:25 as const,slices:30,price:240}];
