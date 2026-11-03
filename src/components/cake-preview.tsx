@@ -10,6 +10,7 @@ export function cakeDimensions(config: CakeConfig) {
   return config.shape === 'Redondo' ? `Ø ${config.size} cm` : `${config.size} × ${config.size} cm`;
 }
 
+export const cakeCatalogImage = (key: string) => catalog[`../assets/cake-catalog/${key}.webp`];
 export function cakePreviewImage(config: CakeConfig): string {
   const key = catalogKey(config);
   const catalogImage = key ? catalog[`../assets/cake-catalog/${key}.webp`] : undefined;

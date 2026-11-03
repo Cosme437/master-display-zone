@@ -3,9 +3,9 @@ import { useState } from 'react';
 import { ArrowLeft, ArrowRight, Check, Cherry, ChevronDown, Circle, Flower2, Heart, Layers3, RotateCcw, ShoppingBag, Square } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
-import { CakePreview, cakePreviewImage, cakeDimensions } from '@/components/cake-preview';
+import { CakePreview, cakePreviewImage, cakeCatalogImage, cakeDimensions } from '@/components/cake-preview';
 import { useBakery } from '@/components/bakery-store';
-import { cakePrice, cakeSizes, cakeFrostings, cakeFrostingName, supportsRoseFrosting, supportsFrosting, effectiveFrosting, money, pageHead, toggleFilling, type CakeConfig } from '@/lib/bakery';
+import { cakePrice, cakeSizes, cakeFrostings, cakeFrostingName, supportsRoseFrosting, supportsFrosting, effectiveFrosting, money, pageHead, catalogCakes, catalogConfig, toggleFilling, type CakeConfig } from '@/lib/bakery';
 import { toast } from 'sonner';
 
 export const Route = createFileRoute('/montar-bolo')({ head: () => pageHead('Monte seu bolo', 'Crie seu bolo Maison: escolha formato, andares, massa, recheios, cobertura, flores e frutas em um ateliê de sabores.'), component: CakeBuilder });
@@ -46,5 +46,8 @@ function CakeBuilder() {
       </div>
       <aside className="builder-preview"><CakePreview config={config}/></aside>
     </div>
+    <section className="page-width mt-12 mb-16" aria-labelledby="catalogo-bolos"><h2 id="catalogo-bolos" className="text-2xl font-semibold mb-1">Nosso catálogo de bolos</h2><p className="text-sm text-muted-foreground mb-6">Toque em um bolo para montá-lo acima.</p>
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">{catalogCakes.map(key => { const c = catalogConfig(key); return <button key={key} type="button" className="rounded-2xl border border-border bg-card p-3 text-left transition hover:border-primary" onClick={() => { setConfig(c); window.scrollTo({ top: 0, behavior: 'smooth' }); }}><img src={cakeCatalogImage(key)} alt={`Bolo ${c.shape}, ${c.dough}, ${c.fillings.join(' e ')}`} loading="lazy" className="w-full aspect-square object-contain"/><span className="block text-xs font-medium mt-2">{c.tiers} {c.tiers===2?'andares':'andar'} · {c.shape}</span><span className="block text-[11px] text-muted-foreground">{c.dough} · {c.fillings.join(' + ')} · {cakeFrostings.find(f=>f.id===c.frosting)?.name}</span></button>; })}</div>
+    </section>
   </main>;
 }

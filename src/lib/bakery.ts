@@ -45,3 +45,9 @@ export type CartItem = { id:string; name:string; description:string; price:numbe
 export const subtotal = (items:CartItem[]) => items.reduce((sum,item)=>sum+item.price*item.quantity,0);
 export const deliveryFee = (method:string) => method==='delivery'?12:0;
 export const pageHead = (title:string, description:string) => ({ meta:[{title:`${title} | Maison — Padaria & Doceria`},{name:'description',content:description},{property:'og:title',content:`${title} | Maison`},{property:'og:description',content:description},{property:'og:type',content:'website'},{name:'twitter:card',content:'summary_large_image'}] });
+/** Rebuilds the builder configuration that a catalog photo represents. */
+export function catalogConfig(key:string):CakeConfig {
+  const [shape, tiers, dough, ...rest] = key.split('-');
+  const frosting = rest.pop() as CakeFrosting;
+  return { shape: shape==='square'?'Quadrado':shape==='heart'?'Coração':'Redondo', size:20, tiers: Number(tiers) as 1|2, dough: dough==='chocolate'?'Chocolate':dough==='vanilla'?'Baunilha':'Red Velvet', fillings: rest.map(i=>cakeFillingOrder[Number(i)]).filter((f):f is string=>Boolean(f)), note:'', edibleFlowers:true, redBerries:true, frosting };
+}
