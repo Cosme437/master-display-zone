@@ -34,9 +34,9 @@ const fillingSlugs = ['creme-de-baunilha', 'doce-de-leite', 'brigadeiro', 'moran
 const imageMap = new Map<string, string>();
 for (const file of cakeImageFiles) {
   const m = file.match(/^bolo-(\d)-andar(?:es)?-(coracao|quadrado|redondo)-(baunilha|chocolate|red-velvet)-(.+)-(branca|chocolate|naked)$/)!;
-  let rest = m[4]; const fillings: string[] = [];
-  while (rest) { const f = fillingSlugs.find(s => rest === s || rest.startsWith(`${s}-`))!; fillings.push(f); rest = rest.slice(f.length + 1); }
-  imageMap.set(lookupKey(Number(m[1]), m[2], m[3], fillings, m[5]), file);
+  let rest: string = m[4] ?? ''; const fillings: string[] = [];
+  while (rest) { const r = rest; const f = fillingSlugs.find(s => r === s || r.startsWith(`${s}-`))!; fillings.push(f); rest = rest.slice(f.length + 1); }
+  imageMap.set(lookupKey(Number(m[1]), m[2] ?? '', m[3] ?? '', fillings, m[5] ?? ''), file);
 }
 
 /** Returns the URL of the exact photo for the selected buttons, or null when none was photographed. */
