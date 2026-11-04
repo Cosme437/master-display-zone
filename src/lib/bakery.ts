@@ -25,7 +25,7 @@ const cakeFillingOrder = ['Creme de Baunilha', 'Brigadeiro', 'Doce de Leite', 'M
 /** Photographed catalog combinations (always with flowers and red berries). */
 export const catalogCakes = ['heart-1-vanilla-1-2-ivory','round-1-vanilla-0-ivory','square-2-vanilla-2-naked','heart-1-vanilla-1-chocolate','round-2-vanilla-0-3-ivory','square-1-vanilla-1-2-naked','round-1-chocolate-1-chocolate','heart-2-chocolate-3-naked','square-1-chocolate-2-chocolate','round-2-chocolate-0-3-ivory','heart-1-chocolate-1-2-naked','heart-2-velvet-0-naked','square-1-velvet-2-ivory','round-2-velvet-1-chocolate','heart-1-velvet-0-3-naked','square-2-velvet-1-2-ivory','square-2-vanilla-3-chocolate','round-1-velvet-1-naked','heart-2-chocolate-0-chocolate'];
 export function catalogKey(config:CakeConfig, frosting:CakeFrosting = config.frosting ?? 'ivory') {
-  if (!config.edibleFlowers || !config.redBerries || !config.fillings.length) return null;
+  if (!config.fillings.length) return null;
   const shape = config.shape === 'Quadrado' ? 'square' : config.shape === 'Coração' ? 'heart' : 'round';
   const dough = config.dough === 'Chocolate' ? 'chocolate' : config.dough === 'Baunilha' ? 'vanilla' : 'velvet';
   const fillings = cakeFillingOrder.flatMap((f, i) => config.fillings.includes(f) ? [i] : []).join('-');
