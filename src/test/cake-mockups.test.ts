@@ -19,6 +19,7 @@ describe('Monte seu bolo screen gallery', () => {
   });
   it('carries the choices the first screen shows', () => {
     const first = cakeMockups[0];
+    if (!first) throw new Error('screen 01 is missing from the gallery');
     expect(first.config.shape).toBe('Coração');
     expect(first.config.tiers).toBe(1);
     expect(first.config.dough).toBe('Baunilha');
