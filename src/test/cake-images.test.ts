@@ -13,3 +13,11 @@ describe('getCakeImage', () => {
     for (const key of catalogCakes) { const c = catalogConfig(key); const url = getCakeImage(c.tiers!, c.dough, c.fillings, c.shape, c.frosting!); expect(url, key).not.toBeNull(); expect(existsSync(`public${url}`)).toBe(true); }
   });
 });
+import { closestCakeImage } from '@/lib/cake-images';
+import { defaultCake } from '@/lib/bakery';
+describe('closestCakeImage', () => {
+  it('always returns one of the 19 new photos', () => {
+    const r = closestCakeImage({ ...defaultCake, shape: 'Redondo', tiers: 1, dough: 'Baunilha', fillings: ['Morango'], frosting: 'naked' });
+    expect(r.exact).toBe(false); expect(r.url.startsWith('/bolos/bolo-')).toBe(true); expect(r.url).toContain('redondo');
+  });
+});

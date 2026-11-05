@@ -32,11 +32,13 @@ const lookupKey = (tiers: number, shape: string, dough: string, fillings: string
 
 const fillingSlugs = ['creme-de-baunilha', 'doce-de-leite', 'brigadeiro', 'morango'];
 const imageMap = new Map<string, string>();
+const entries: { file: string; tiers: number; shape: string; dough: string; fillings: string[]; frosting: string }[] = [];
 for (const file of cakeImageFiles) {
   const m = file.match(/^bolo-(\d)-andar(?:es)?-(coracao|quadrado|redondo)-(baunilha|chocolate|red-velvet)-(.+)-(branca|chocolate|naked)$/)!;
   let rest: string = m[4] ?? ''; const fillings: string[] = [];
   while (rest) { const r = rest; const f = fillingSlugs.find(s => r === s || r.startsWith(`${s}-`))!; fillings.push(f); rest = rest.slice(f.length + 1); }
   imageMap.set(lookupKey(Number(m[1]), m[2] ?? '', m[3] ?? '', fillings, m[5] ?? ''), file);
+  entries.push({ file, tiers: Number(m[1]), shape: m[2] ?? '', dough: m[3] ?? '', fillings, frosting: m[5] ?? '' });
 }
 
 /** Returns the URL of the exact photo for the selected buttons, or null when none was photographed. */
@@ -47,3 +49,18 @@ export function getCakeImage(andares: number, massa: string, recheios: string[],
 
 export const cakeImageFor = (config: CakeConfig, frosting: CakeFrosting = config.frosting ?? 'ivory') =>
   getCakeImage(config.tiers ?? 1, config.dough, config.fillings, config.shape, frosting);
+
+/** Always returns one of the 19 photos: the exact match, or the closest one (shape > frosting > dough > tiers > fillings). */
+export function closestCakeImage(config: CakeConfig): { url: string; exact: boolean } {
+  const exact = cakeImageFor(config);
+  if (exact) return { url: exact, exact: true };
+  const shape = slug(config.shape), dough = slug(config.dough), fillings = config.fillings.map(slug);
+  const frosting = frostingSlug[config.frosting ?? 'ivory'], tiers = config.tiers ?? 1;
+  let best = entries[0]!, bestScore = -Infinity;
+  for (const e of entries) {
+    const score = (e.shape === shape ? 16 : 0) + (e.frosting === frosting ? 8 : 0) + (e.dough === dough ? 4 : 0) + (e.tiers === tiers ? 2 : 0)
+      + e.fillings.filter(f => fillings.includes(f)).length * 1.5 - e.fillings.filter(f => !fillings.includes(f)).length * 0.5;
+    if (score > bestScore) { best = e; bestScore = score; }
+  }
+  return { url: `/bolos/${best.file}.webp`, exact: false };
+}

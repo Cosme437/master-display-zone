@@ -14,7 +14,7 @@ describe('Cake requirements',()=>{
 });import { supportsFrosting, effectiveFrosting, catalogKey } from '@/lib/bakery';
 describe('catalog frostings',()=>{
  const base={...defaultCake,shape:'Coração',tiers:2 as const,dough:'Chocolate',fillings:['Creme de Baunilha'],edibleFlowers:true,redBerries:true};
- it('enables chocolate frosting only for photographed combinations',()=>{expect(supportsFrosting(base,'chocolate')).toBe(true);expect(supportsFrosting({...base,dough:'Baunilha'},'chocolate')).toBe(false);});
+ it('offers white, chocolate and naked frosting for every combination',()=>{expect(supportsFrosting({...base,dough:'Baunilha'},'chocolate')).toBe(true);expect(supportsFrosting({...base,dough:'Baunilha'},'naked')).toBe(true);expect(effectiveFrosting({...base,frosting:'naked'})).toBe('naked');});
  it('keeps photographed frosting when decorations change',()=>{expect(catalogKey({...base,edibleFlowers:false},'chocolate')).toBe('heart-2-chocolate-0-chocolate');});
  it('keeps price unchanged by frosting',()=>{expect(cakePrice({...base,frosting:'naked'})).toBe(cakePrice({...base,frosting:'chocolate'}));});
 });
