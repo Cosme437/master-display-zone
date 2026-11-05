@@ -33,7 +33,7 @@ export function catalogKey(config:CakeConfig, frosting:CakeFrosting = config.fro
   return catalogCakes.includes(key) ? key : null;
 }
 export function supportsRoseFrosting(config:CakeConfig) { return config.tiers===2 && Boolean(config.edibleFlowers && config.redBerries) && config.fillings.length===2 && config.fillings.includes('Doce de Leite') && config.fillings.includes('Morango'); }
-export function supportsFrosting(config:CakeConfig, frosting:CakeFrosting) { return frosting==='ivory' || (frosting==='rose' ? supportsRoseFrosting(config) : catalogKey(config, frosting)!==null); }
+export function supportsFrosting(config:CakeConfig, frosting:CakeFrosting) { return frosting==='rose' ? supportsRoseFrosting(config) : true; }
 export function effectiveFrosting(config:CakeConfig):CakeFrosting { const f = config.frosting ?? 'ivory'; return supportsFrosting(config, f) ? f : 'ivory'; }
 export function cakeFrostingName(config:CakeConfig) { return cakeFrostings.find(f=>f.id===effectiveFrosting(config))!.name; }
 export type CakeConfig = { shape:string; size:15|20|25; dough:string; fillings:string[]; note:string; tiers?:1|2; edibleFlowers?:boolean; redBerries?:boolean; frosting?:CakeFrosting };
