@@ -18,3 +18,13 @@ describe('catalog frostings',()=>{
  it('keeps photographed frosting when decorations change',()=>{expect(catalogKey({...base,edibleFlowers:false},'chocolate')).toBe('heart-2-chocolate-0-chocolate');});
  it('keeps price unchanged by frosting',()=>{expect(cakePrice({...base,frosting:'naked'})).toBe(cakePrice({...base,frosting:'chocolate'}));});
 });
+import { products } from '@/lib/bakery';
+import comboPhoto from '@/assets/combo-festa-coxinhas-bolo-chocolate.jpg.asset.json';
+import piscinaPhoto from '@/assets/torta-piscina-da-paixao-morango.jpg.asset.json';
+describe('photographed catalog additions',()=>{
+ const combo=products.find(p=>p.id==='combo-festa');
+ const piscina=products.find(p=>p.id==='piscina-da-paixao');
+ it('sells the party combo under the Combos category',()=>{expect(combo?.category).toBe('Combos');expect(combo?.name).toBe('Combo de festa');});
+ it('sells the strawberry tart as Piscina da Paixão under Bolos',()=>{expect(piscina?.category).toBe('Bolos');expect(piscina?.name).toBe('Piscina da Paixão');});
+ it('shows the two new photographs, not placeholders',()=>{expect(combo?.image).toBe(comboPhoto.url);expect(piscina?.image).toBe(piscinaPhoto.url);});
+});
