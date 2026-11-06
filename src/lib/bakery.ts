@@ -4,6 +4,8 @@ import bread from '@/assets/bread.jpg';
 import cheese from '@/assets/cheese.jpg';
 import brownie from '@/assets/brownie.jpg';
 import coffee from '@/assets/coffee.jpg';
+import comboFesta from '@/assets/combo-festa-coxinhas-bolo-chocolate.jpg.asset.json';
+import piscinaDaPaixao from '@/assets/torta-piscina-da-paixao-morango.jpg.asset.json';
 
 export const money = (value: number) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
 export const products = [
@@ -13,6 +15,8 @@ export const products = [
   { id:'cheese', name:'Pão de queijo artesanal', description:'Queijo da Serra, quentinho por dentro.', price:8.5, category:'Salgados', image:cheese, tag:'' },
   { id:'brownie', name:'Brownie de chocolate', description:'Chocolate intenso e um centro macio.', price:16.9, category:'Doces', image:brownie, tag:'Favorito da casa' },
   { id:'coffee', name:'Cappuccino da casa', description:'Espresso especial e leite cremoso.', price:14.9, category:'Bebidas', image:coffee, tag:'' },
+  { id:'combo-festa', name:'Combo de festa', description:'Caixa de coxinhas douradas, bolinhas de queijo e bolo de chocolate.', price:189.9, category:'Combos', image:comboFesta.url, tag:'Para compartilhar' },
+  { id:'piscina-da-paixao', name:'Piscina da Paixão', description:'Torta de morango com creme de baunilha e toque de pâtisserie fina.', price:149.9, category:'Bolos', image:piscinaDaPaixao.url, tag:'Novidade' },
 ];
 export const branches = [
   { id:'jardins', name:'Jardins', address:'Alameda Lorena, 1250 · São Paulo', latitude:-23.5666, longitude:-46.6632 },

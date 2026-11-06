@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
-import { ArrowRight, CakeSlice, Coffee, Croissant, Grid2X2, Heart, Leaf, Plus, Search, Sparkles, Truck, Wheat, X } from 'lucide-react';
+import { ArrowRight, CakeSlice, Coffee, Croissant, Grid2X2, Heart, Leaf, PartyPopper, Plus, Search, Sparkles, Truck, Wheat, X } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useBakery } from '@/components/bakery-store';
@@ -9,7 +9,7 @@ import cake from '@/assets/cake.jpg';
 import { toast } from 'sonner';
 
 export const Route=createFileRoute('/')({head:()=>pageHead('Nossa vitrine','Descubra pães artesanais, doces delicados e bolos feitos com carinho na Maison.'),component:Index});
-const categories=[{name:'Todos',icon:Grid2X2},{name:'Pães',icon:Croissant},{name:'Doces',icon:Heart},{name:'Salgados',icon:Wheat},{name:'Bebidas',icon:Coffee},{name:'Bolos',icon:CakeSlice}];
+const categories=[{name:'Todos',icon:Grid2X2},{name:'Pães',icon:Croissant},{name:'Doces',icon:Heart},{name:'Salgados',icon:Wheat},{name:'Bebidas',icon:Coffee},{name:'Combos',icon:PartyPopper},{name:'Bolos',icon:CakeSlice}];
 function Index() {
   const [category,setCategory]=useState('Todos');const [query,setQuery]=useState(''); const [sort,setSort]=useState('favorites'); const store=useBakery();
   let visible=products.filter(p=>(category==='Todos'||p.category===category)&&`${p.name} ${p.description}`.toLocaleLowerCase('pt-BR').includes(query.toLocaleLowerCase('pt-BR')));
