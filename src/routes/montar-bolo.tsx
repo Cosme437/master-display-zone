@@ -32,7 +32,7 @@ function CakeBuilder() {
   return <main className="cake-builder reveal">
     <div className="page-width builder-intro">
       <Link to="/" className="inline-flex items-center gap-2 text-xs text-muted-foreground"><ArrowLeft size={13}/>Nossa vitrine</Link>
-      <div className="builder-title"><div><p className="eyebrow text-primary mb-2">Seu momento. Seu bolo.</p><h1>Monte seu bolo<span className="text-primary">.</span></h1><p className="text-sm text-muted-foreground mt-2">Camadas de carinho, do seu jeito.</p></div><span className="builder-step"><span>01</span> Personalize <ArrowRight size={13}/> <span>02</span> Celebre</span></div>
+      <div className="builder-title"><div><p className="eyebrow text-primary mb-2">Seu momento. Seu bolo.</p><h1>Monte seu bolo<span className="text-primary">.</span></h1><p className="text-sm text-muted-foreground mt-2">Camadas de carinho, do seu jeito.</p></div></div>
     </div>
     <div className="page-width builder-layout">
       <div className="builder-controls">
