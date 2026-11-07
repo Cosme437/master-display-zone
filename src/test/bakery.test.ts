@@ -28,3 +28,8 @@ describe('photographed catalog additions',()=>{
  it('sells the strawberry tart as Piscina da Paixão under Bolos',()=>{expect(piscina?.category).toBe('Bolos');expect(piscina?.name).toBe('Piscina da Paixão');});
  it('shows the two new photographs, not placeholders',()=>{expect(combo?.image).toBe(comboPhoto.url);expect(piscina?.image).toBe(piscinaPhoto.url);});
 });
+describe('vitrine sweets and snacks catalog',()=>{
+ const ids=['suspiro-de-verao','erupcao-de-alegria','nuvem-do-bosque','abraco-de-vo','folhas-de-ouro','espelho-doce','segredo-europeu','veludo-real','rainha-da-festa','ouro-derretido','meia-lua-saborosa','tesouro-arabe','casquinha-perfeita','classico-de-domingo','abraco-quentinho','crocancia-absoluta','brisa-salgada','orgulho-mineiro'];
+ it('lists every catalog sweet and snack with photo, name and price',()=>{for(const id of ids){const p=products.find(x=>x.id===id);expect(p, id).toBeDefined();expect(p!.name.length).toBeGreaterThan(0);expect(p!.price).toBeGreaterThan(0);expect(p!.image).toBeTruthy();}});
+ it('files the eight new sweets under Doces and the ten snacks under Salgados',()=>{expect(ids.slice(0,8).every(id=>products.find(p=>p.id===id)?.category==='Doces')).toBe(true);expect(ids.slice(8).every(id=>products.find(p=>p.id===id)?.category==='Salgados')).toBe(true);});
+});
