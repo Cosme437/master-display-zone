@@ -6,6 +6,24 @@ import brownie from '@/assets/brownie.jpg';
 import coffee from '@/assets/coffee.jpg';
 import comboFesta from '@/assets/combo-festa-coxinhas-bolo-chocolate.jpg.asset.json';
 import piscinaDaPaixao from '@/assets/torta-piscina-da-paixao-morango.jpg.asset.json';
+import tortaLimao from '@/assets/torta-limao-suspiro-de-verao.jpg';
+import boloCenoura from '@/assets/bolo-cenoura-erupcao-de-alegria.jpg';
+import cheesecake from '@/assets/cheesecake-nuvem-do-bosque.jpg';
+import pave from '@/assets/pave-abraco-de-vo.jpg';
+import milFolhas from '@/assets/mil-folhas-folhas-de-ouro.jpg';
+import pudim from '@/assets/pudim-espelho-doce.jpg';
+import tortaHolandesa from '@/assets/torta-holandesa-segredo-europeu.jpg';
+import redVelvet from '@/assets/bolo-red-velvet-veludo-real.jpg';
+import coxinha from '@/assets/coxinha-rainha-da-festa.jpg';
+import bolinhaQueijo from '@/assets/bolinha-queijo-ouro-derretido.jpg';
+import risolis from '@/assets/risolis-carne-meia-lua.jpg';
+import kibe from '@/assets/kibe-tesouro-arabe.jpg';
+import empadinha from '@/assets/empadinha-palmito-casquinha.jpg';
+import esfiha from '@/assets/esfiha-carne-classico.jpg';
+import enroladinho from '@/assets/enroladinho-salsicha-abraco.jpg';
+import croquete from '@/assets/croquete-carne-crocancia.jpg';
+import pastelzinho from '@/assets/pastelzinho-queijo-brisa.jpg';
+import paoQueijoRecheado from '@/assets/pao-queijo-recheado-orgulho.jpg';
 
 export const money = (value: number) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
 export const products = [
@@ -17,6 +35,24 @@ export const products = [
   { id:'coffee', name:'Cappuccino da casa', description:'Espresso especial e leite cremoso.', price:14.9, category:'Bebidas', image:coffee, tag:'' },
   { id:'combo-festa', name:'Combo de festa', description:'Caixa de coxinhas douradas, bolinhas de queijo e bolo de chocolate.', price:189.9, category:'Combos', image:comboFesta.url, tag:'Para compartilhar' },
   { id:'piscina-da-paixao', name:'Piscina da Paixão', description:'Torta de morango com creme de baunilha e toque de pâtisserie fina.', price:149.9, category:'Bolos', image:piscinaDaPaixao.url, tag:'Novidade' },
+  { id:'suspiro-de-verao', name:'Suspiro de Verão', description:'Torta de limão com merengue tostado na hora.', price:119.9, category:'Doces', image:tortaLimao, tag:'' },
+  { id:'erupcao-de-alegria', name:'Erupção de Alegria', description:'Bolo de cenoura com vulcão de brigadeiro.', price:99.9, category:'Doces', image:boloCenoura, tag:'Favorito da casa' },
+  { id:'nuvem-do-bosque', name:'Nuvem do Bosque', description:'Cheesecake cremoso com frutas vermelhas frescas.', price:139.9, category:'Doces', image:cheesecake, tag:'' },
+  { id:'abraco-de-vo', name:'Abraço de Vó', description:'Pavê de doce de leite em camadas generosas.', price:89.9, category:'Doces', image:pave, tag:'' },
+  { id:'folhas-de-ouro', name:'Folhas de Ouro', description:'Mil folhas de baunilha com massa folhada crocante.', price:109.9, category:'Doces', image:milFolhas, tag:'' },
+  { id:'espelho-doce', name:'Espelho Doce', description:'Pudim de leite condensado com calda de caramelo.', price:79.9, category:'Doces', image:pudim, tag:'' },
+  { id:'segredo-europeu', name:'Segredo Europeu', description:'Torta holandesa com ganache e raspas de chocolate.', price:129.9, category:'Doces', image:tortaHolandesa, tag:'' },
+  { id:'veludo-real', name:'Veludo Real', description:'Bolo Red Velvet tradicional com cream cheese.', price:159.9, category:'Doces', image:redVelvet, tag:'' },
+  { id:'rainha-da-festa', name:'A Rainha da Festa', description:'Coxinha de frango com catupiry, dourada e crocante.', price:9.9, category:'Salgados', image:coxinha, tag:'Mais amado' },
+  { id:'ouro-derretido', name:'Ouro Derretido', description:'Bolinha de queijo com coração cremoso.', price:8.9, category:'Salgados', image:bolinhaQueijo, tag:'' },
+  { id:'meia-lua-saborosa', name:'Meia-Lua Saborosa', description:'Risólis de carne com casquinha crocante.', price:9.5, category:'Salgados', image:risolis, tag:'' },
+  { id:'tesouro-arabe', name:'Tesouro Árabe', description:'Kibe recheado com carne temperada e hortelã.', price:10.9, category:'Salgados', image:kibe, tag:'' },
+  { id:'casquinha-perfeita', name:'Casquinha Perfeita', description:'Empadinha de palmito com massa amanteigada.', price:9.9, category:'Salgados', image:empadinha, tag:'' },
+  { id:'classico-de-domingo', name:'Clássico de Domingo', description:'Esfiha de carne aberta, suculenta e temperada.', price:9.9, category:'Salgados', image:esfiha, tag:'' },
+  { id:'abraco-quentinho', name:'Abraço Quentinho', description:'Enroladinho de salsicha em massa fofinha.', price:8.9, category:'Salgados', image:enroladinho, tag:'' },
+  { id:'crocancia-absoluta', name:'Crocância Absoluta', description:'Croquete de carne desfiada, sequinho por fora.', price:9.5, category:'Salgados', image:croquete, tag:'' },
+  { id:'brisa-salgada', name:'Brisa Salgada', description:'Pastelzinho de queijo com massa fina e estalinhos.', price:8.9, category:'Salgados', image:pastelzinho, tag:'' },
+  { id:'orgulho-mineiro', name:'Orgulho Mineiro', description:'Pão de queijo recheado, quentinho e puxa-puxa.', price:10.9, category:'Salgados', image:paoQueijoRecheado, tag:'' },
 ];
 export const branches = [
   { id:'jardins', name:'Jardins', address:'Alameda Lorena, 1250 · São Paulo', latitude:-23.5666, longitude:-46.6632 },
