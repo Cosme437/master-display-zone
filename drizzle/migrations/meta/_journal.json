@@ -29,6 +29,13 @@
       "when": 1794102506575,
       "tag": "0003_store_catalog_management",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1794102517804,
+      "tag": "0004_scope_store_stock_to_branch",
+      "breakpoints": true
     }
   ]
 }

@@ -326,16 +326,19 @@ export type Database = {
       }
       store_product_settings: {
         Row: {
+          branch_id: string
           campaign_id: string | null
           product_id: string
           stock_status: string
         }
         Insert: {
+          branch_id?: string
           campaign_id?: string | null
           product_id: string
           stock_status?: string
         }
         Update: {
+          branch_id?: string
           campaign_id?: string | null
           product_id?: string
           stock_status?: string
