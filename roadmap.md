@@ -1,5 +1,8 @@
 # Bakery frontend
 
+- [ ] Add stock management, fried/frozen combo choices and seasonal menus to the simulated bakery.
+- [ ] Verify stock limits, combo cart details and seasonal availability end to end.
+
 - [x] Establish visual identity and product photography.
 - [x] Create storefront and branch selection.
 - [x] Create cake customization with live totals.

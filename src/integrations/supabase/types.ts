@@ -300,6 +300,59 @@ export type Database = {
           },
         ]
       }
+      store_campaigns: {
+        Row: {
+          active: boolean
+          end_date: string
+          id: string
+          name: string
+          start_date: string
+        }
+        Insert: {
+          active?: boolean
+          end_date: string
+          id?: string
+          name: string
+          start_date: string
+        }
+        Update: {
+          active?: boolean
+          end_date?: string
+          id?: string
+          name?: string
+          start_date?: string
+        }
+        Relationships: []
+      }
+      store_product_settings: {
+        Row: {
+          branch_id: string
+          campaign_id: string | null
+          product_id: string
+          stock_status: string
+        }
+        Insert: {
+          branch_id?: string
+          campaign_id?: string | null
+          product_id: string
+          stock_status?: string
+        }
+        Update: {
+          branch_id?: string
+          campaign_id?: string | null
+          product_id?: string
+          stock_status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "store_product_settings_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "store_campaigns"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           id: string
