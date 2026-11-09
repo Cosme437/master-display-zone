@@ -25,6 +25,7 @@ export const saveProductSetting = createServerFn({ method: 'POST' }).middleware(
   if (error) throw new Error('Não foi possível salvar. É necessário acesso de administrador.');
 });
 export const saveCampaign = createServerFn({ method: 'POST' }).middleware([requireSupabaseAuth]).inputValidator(campaignSchema).handler(async ({ data, context }) => {
-  const { error } = await context.supabase.from('store_campaigns').upsert(data);
+  const { id, ...fields } = data;
+  const { error } = await context.supabase.from('store_campaigns').upsert({ ...fields, ...(id ? { id } : {}) });
   if (error) throw new Error('Não foi possível salvar a campanha. É necessário acesso de administrador.');
 });

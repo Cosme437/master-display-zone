@@ -19,6 +19,7 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as AuthenticatedAtendimentoRouteImport } from './routes/_authenticated/atendimento'
 import { Route as AuthenticatedContaRouteImport } from './routes/_authenticated/conta'
 import { Route as AuthenticatedGestaoRouteImport } from './routes/_authenticated/gestao'
+import { Route as AuthenticatedLojaRouteImport } from './routes/_authenticated/loja'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -70,6 +71,11 @@ const AuthenticatedGestaoRoute = AuthenticatedGestaoRouteImport.update({
   path: '/gestao',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedLojaRoute = AuthenticatedLojaRouteImport.update({
+  id: '/loja',
+  path: '/loja',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -81,6 +87,7 @@ export interface FileRoutesByFullPath {
   '/atendimento': typeof AuthenticatedAtendimentoRoute
   '/conta': typeof AuthenticatedContaRoute
   '/gestao': typeof AuthenticatedGestaoRoute
+  '/loja': typeof AuthenticatedLojaRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -92,6 +99,7 @@ export interface FileRoutesByTo {
   '/atendimento': typeof AuthenticatedAtendimentoRoute
   '/conta': typeof AuthenticatedContaRoute
   '/gestao': typeof AuthenticatedGestaoRoute
+  '/loja': typeof AuthenticatedLojaRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -105,6 +113,7 @@ export interface FileRoutesById {
   '/_authenticated/atendimento': typeof AuthenticatedAtendimentoRoute
   '/_authenticated/conta': typeof AuthenticatedContaRoute
   '/_authenticated/gestao': typeof AuthenticatedGestaoRoute
+  '/_authenticated/loja': typeof AuthenticatedLojaRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -118,6 +127,7 @@ export interface FileRouteTypes {
     | '/atendimento'
     | '/conta'
     | '/gestao'
+    | '/loja'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -129,6 +139,7 @@ export interface FileRouteTypes {
     | '/atendimento'
     | '/conta'
     | '/gestao'
+    | '/loja'
   id:
     | '__root__'
     | '/'
@@ -141,6 +152,7 @@ export interface FileRouteTypes {
     | '/_authenticated/atendimento'
     | '/_authenticated/conta'
     | '/_authenticated/gestao'
+    | '/_authenticated/loja'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -225,6 +237,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedGestaoRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/loja': {
+      id: '/_authenticated/loja'
+      path: '/loja'
+      fullPath: '/loja'
+      preLoaderRoute: typeof AuthenticatedLojaRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -232,12 +251,14 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAtendimentoRoute: typeof AuthenticatedAtendimentoRoute
   AuthenticatedContaRoute: typeof AuthenticatedContaRoute
   AuthenticatedGestaoRoute: typeof AuthenticatedGestaoRoute
+  AuthenticatedLojaRoute: typeof AuthenticatedLojaRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAtendimentoRoute: AuthenticatedAtendimentoRoute,
   AuthenticatedContaRoute: AuthenticatedContaRoute,
   AuthenticatedGestaoRoute: AuthenticatedGestaoRoute,
+  AuthenticatedLojaRoute: AuthenticatedLojaRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =

@@ -1,7 +1,8 @@
 # Bakery frontend
 
-- [ ] Add stock management, fried/frozen combo choices and seasonal menus to the simulated bakery.
-- [ ] Verify stock limits, combo cart details and seasonal availability end to end.
+- [x] Add stock management, fried/frozen combo choices and seasonal menus to the bakery, preserving demonstrative checkout.
+- [x] Verify availability rules, required combo preparation through checkout and client access restrictions.
+- [ ] Verify administrator stock/campaign editing end to end — waiting for explicitly authorized first administrator.
 
 - [x] Establish visual identity and product photography.
 - [x] Create storefront and branch selection.

@@ -19,6 +19,8 @@ describe.skipIf(!url||!secret||!key)('Database permission boundaries',()=>{
    const promotion=await first.rpc('manage_access',{target_user:id,wanted_role:'admin',branches:[]});expect(promotion.error?.message).toContain('Sem permissão');
    const privateRead=await first.from('profiles').select('id').eq('id',otherId);expect(privateRead.error).toBeNull();expect(privateRead.data).toEqual([]);
    const directRoleWrite=await first.from('user_roles').insert({user_id:id,role:'admin'});expect(directRoleWrite.error).not.toBeNull();
+   const stockWrite=await first.from('store_product_settings').upsert({product_id:'combo-festa',branch_id:'jardins',stock_status:'ESGOTADO'});expect(stockWrite.error).not.toBeNull();
+   const campaignWrite=await first.from('store_campaigns').insert({name:'Unauthorized campaign',start_date:'2026-12-01',end_date:'2026-12-25',active:true});expect(campaignWrite.error).not.toBeNull();
   }finally{for(const id of ids)await admin.auth.admin.deleteUser(id);}
  },30000);
 });
