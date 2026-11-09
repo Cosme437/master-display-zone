@@ -7,12 +7,16 @@ import { money, pageHead, products } from '@/lib/bakery';
 import hero from '@/assets/bakery-hero.jpg';
 import cake from '@/assets/cake.jpg';
 import { toast } from 'sonner';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { catalogSettingsQuery } from '@/lib/store-catalog-queries';
+import { localDate, productAvailability, stockStatuses } from '@/lib/store-catalog';
 
-export const Route=createFileRoute('/')({head:()=>pageHead('Nossa vitrine','Descubra pães artesanais, doces delicados e bolos feitos com carinho na Maison.'),component:Index});
+export const Route=createFileRoute('/')({head:()=>pageHead('Nossa vitrine','Descubra pães artesanais, doces delicados e bolos feitos com carinho na Maison.'),loader:({context})=>context.queryClient.ensureQueryData(catalogSettingsQuery()),component:Index});
 const categories=[{name:'Todos',icon:Grid2X2},{name:'Pães',icon:Croissant},{name:'Doces',icon:Heart},{name:'Salgados',icon:Wheat},{name:'Bebidas',icon:Coffee},{name:'Combos',icon:PartyPopper},{name:'Bolos',icon:CakeSlice}];
 function Index() {
   const [category,setCategory]=useState('Todos');const [query,setQuery]=useState(''); const [sort,setSort]=useState('favorites'); const store=useBakery();
-  let visible=products.filter(p=>(category==='Todos'||p.category===category)&&`${p.name} ${p.description}`.toLocaleLowerCase('pt-BR').includes(query.toLocaleLowerCase('pt-BR')));
+  const {data:catalog}=useSuspenseQuery(catalogSettingsQuery());
+  let visible=products.filter(p=>productAvailability(p.id,store.branchId,catalog,localDate()).visible&&(category==='Todos'||p.category===category)&&`${p.name} ${p.description}`.toLocaleLowerCase('pt-BR').includes(query.toLocaleLowerCase('pt-BR')));
   if(sort==='lowest') visible=[...visible].sort((a,b)=>a.price-b.price); if(sort==='highest') visible=[...visible].sort((a,b)=>b.price-a.price);
   return <main className="page-width pt-7 reveal">
     <div className="store-hero"><img src={hero} alt="Croissants artesanais dourados e uma xícara de café na Maison" width={1536} height={1024} fetchPriority="high"/><div className="hero-wash"/><div className="hero-copy"><div className="eyebrow text-primary flex items-center gap-2"><span className="w-5 border-t border-primary"/>O melhor do seu dia começa aqui</div><h1>Um carinho<br/>em cada <em className="text-primary">fornada.</em></h1><p className="text-sm text-foreground/80 leading-6 max-w-[310px]">Pães artesanais, doces que abraçam e pequenos prazeres feitos para você.</p><Button variant="bakery" className="mt-6 h-11 px-6" onClick={()=>document.getElementById('vitrine')?.scrollIntoView({behavior:'smooth',block:'start'})}>Explorar a vitrine <ArrowRight size={16}/></Button><div className="flex items-center gap-2 text-[10px] text-foreground/75 mt-5"><Wheat size={14}/>Ingredientes de verdade. Feito à mão.</div></div></div>
