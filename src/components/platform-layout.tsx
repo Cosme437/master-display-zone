@@ -1,6 +1,6 @@
 import {Link,useNavigate} from '@tanstack/react-router';
 import {useQueryClient,useSuspenseQuery} from '@tanstack/react-query';
-import {LogOut,MessageCircle,UserRound,LayoutDashboard} from 'lucide-react';
+import {LogOut,MessageCircle,UserRound,LayoutDashboard,Package} from 'lucide-react';
 import {Button} from '@/components/ui/button';
 import {supabase} from '@/integrations/supabase/client';
 import {accountQuery} from '@/lib/platform-queries';
