@@ -1,6 +1,6 @@
 # Bakery frontend
 
-- [ ] Complete isolated administrator catalog, stock, price and seasonal campaign management; verify storefront and checkout effects.
+- [x] Complete isolated administrator catalog, stock, price and seasonal campaign management; verify storefront, persistence, checkout blocking and employee restriction.
 
 - [x] Renew five legacy product photos/names, add five breads and remove beverages.
 - [x] Add four isolated demo personas with visible login access and seeded orders; verify all personas, status persistence and checkout readback.
