@@ -33,3 +33,11 @@ describe('vitrine sweets and snacks catalog',()=>{
  it('lists every catalog sweet and snack with photo, name and price',()=>{for(const id of ids){const p=products.find(x=>x.id===id);expect(p, id).toBeDefined();expect(p!.name.length).toBeGreaterThan(0);expect(p!.price).toBeGreaterThan(0);expect(p!.image).toBeTruthy();}});
  it('files the eight new sweets under Doces and the ten snacks under Salgados',()=>{expect(ids.slice(0,8).every(id=>products.find(p=>p.id===id)?.category==='Doces')).toBe(true);expect(ids.slice(8).every(id=>products.find(p=>p.id===id)?.category==='Salgados')).toBe(true);});
 });
+
+import { paymentOptions } from '@/lib/bakery';
+describe('payment options', () => {
+  it('allows paying at the counter only for pickup', () => {
+    expect(paymentOptions('pickup')).toContain('onPickup');
+    expect(paymentOptions('delivery')).not.toContain('onPickup');
+  });
+});

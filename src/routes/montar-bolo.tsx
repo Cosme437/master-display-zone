@@ -7,13 +7,14 @@ import { CakePreview, cakePreviewImage, cakeCatalogImage, cakeDimensions } from 
 import { useBakery } from '@/components/bakery-store';
 import { cakePrice, cakeSizes, cakeFrostings, cakeFrostingName, supportsRoseFrosting, supportsFrosting, effectiveFrosting, money, pageHead, catalogCakes, catalogConfig, toggleFilling, type CakeConfig } from '@/lib/bakery';
 import { toast } from 'sonner';
+import { useRequireSignIn } from '@/components/use-signed-in';
 
 export const Route = createFileRoute('/montar-bolo')({ head: () => pageHead('Monte seu bolo', 'Crie seu bolo Maison: escolha formato, andares, massa, recheios, cobertura, flores e frutas em um ateliê de sabores.'), component: CakeBuilder });
 const showcase: CakeConfig = { shape: 'Coração', size: 20, dough: 'Red Velvet', fillings: ['Doce de Leite', 'Morango'], note: '', tiers: 2, edibleFlowers: true, redBerries: true, frosting: 'ivory' };
 
 function CakeBuilder() {
   const [config, setConfig] = useState<CakeConfig>(showcase);
-  const store = useBakery();
+  const store = useBakery(); const { require: requireSignIn } = useRequireSignIn();
   const set = <K extends keyof CakeConfig>(key: K, value: CakeConfig[K]) => setConfig(c => {
     const next = { ...c, [key]: value };
     return next.frosting && !supportsFrosting(next, next.frosting) ? { ...next, frosting: 'ivory' } : next;
