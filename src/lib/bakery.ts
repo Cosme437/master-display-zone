@@ -100,3 +100,8 @@ export function catalogConfig(key:string):CakeConfig {
   const frosting = rest.pop() as CakeFrosting;
   return { shape: shape==='square'?'Quadrado':shape==='heart'?'Coração':'Redondo', size:20, tiers: Number(tiers) as 1|2, dough: dough==='chocolate'?'Chocolate':dough==='vanilla'?'Baunilha':'Red Velvet', fillings: rest.map(i=>cakeFillingOrder[Number(i)]).filter((f):f is string=>Boolean(f)), note:'', edibleFlowers:true, redBerries:true, frosting };
 }
+
+export const paymentMethods = { pix:'Pix', credit:'Cartão de crédito', debit:'Cartão de débito', onPickup:'Pagar na retirada' } as const;
+export type PaymentMethod = keyof typeof paymentMethods;
+/** Paying at the counter is only possible when the customer picks the order up. */
+export const paymentOptions = (method:string):PaymentMethod[] => method==='pickup'?['pix','credit','debit','onPickup']:['pix','credit','debit'];

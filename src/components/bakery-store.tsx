@@ -4,10 +4,10 @@ import {seededDemoCatalog as emptyDemoCatalog,withSeasonalSeed,saveDemoStock,sav
 import type {Campaign} from '@/lib/store-catalog';
 import { canManageDemoOrder, demoAccounts, seedDemoOrders, normalizeDemoStatus, type DemoAccount, type DemoOrderStatus } from '@/lib/demo-accounts';
 
-export type Order = { id:string; items:CartItem[]; total:number; method:string; date:string; time:string; address:string; branchId:string; customerDemoId?:string; status?:DemoOrderStatus; messages:{text:string;customer:boolean}[] };
+export type Order = { id:string; items:CartItem[]; total:number; method:string; date:string; time:string; address:string; branchId:string; customerDemoId?:string; status?:DemoOrderStatus; payment?:string; review?:{rating:number;text:string}; messages:{text:string;customer:boolean}[] };
 type State = { branchId:string; selected:boolean; cart:CartItem[]; orders:Order[]; demoAccountId?:string|undefined; demoCarts?:Record<string,CartItem[]>; catalogDemo?:DemoCatalog };
 const initial:State = {branchId:'jardins',selected:false,cart:[],orders:[]};
-type Store = State & { ready:boolean; demoCatalog:DemoCatalog; saveDemoProduct:(row:DemoProductSetting)=>void; saveDemoCampaign:(row:Campaign)=>void; demoAccount:DemoAccount|null; demoStatus:(id:string,status:DemoOrderStatus)=>void; saveDemoStock:(productId:string,branchId:string,status:DemoProductSetting['stock_status'])=>void; startDemo:(id:string)=>void; endDemo:()=>void; setBranch:(id:string)=>void; add:(item:Omit<CartItem,'quantity'>)=>void; prepare:(id:string,preparation:'fried'|'frozen')=>void; quantity:(id:string,quantity:number)=>void; checkout:(order:Omit<Order,'id'|'items'|'messages'|'branchId'>)=>void; message:(id:string,text:string)=>void };
+type Store = State & { ready:boolean; demoCatalog:DemoCatalog; saveDemoProduct:(row:DemoProductSetting)=>void; saveDemoCampaign:(row:Campaign)=>void; demoAccount:DemoAccount|null; demoStatus:(id:string,status:DemoOrderStatus)=>void; saveDemoStock:(productId:string,branchId:string,status:DemoProductSetting['stock_status'])=>void; startDemo:(id:string)=>void; endDemo:()=>void; setBranch:(id:string)=>void; add:(item:Omit<CartItem,'quantity'>)=>void; prepare:(id:string,preparation:'fried'|'frozen')=>void; quantity:(id:string,quantity:number)=>void; checkout:(order:Omit<Order,'id'|'items'|'messages'|'branchId'>)=>void; message:(id:string,text:string)=>void; review:(id:string,rating:number,text:string)=>void };
 const Context = createContext<Store|null>(null);
 export function BakeryProvider({children}:{children:ReactNode}) {
   const [state,setState] = useState<State>(initial);
@@ -27,6 +27,7 @@ export function BakeryProvider({children}:{children:ReactNode}) {
     add:(item)=>setState(s=>({...s,cart:s.cart.some(i=>i.id===item.id)?s.cart.map(i=>i.id===item.id?{...i,quantity:i.quantity+1}:i):[...s.cart,{...item,quantity:1}]})),
     quantity:(id,value)=>setState(s=>({...s,cart:value<=0?s.cart.filter(i=>i.id!==id):s.cart.map(i=>i.id===id?{...i,quantity:value}:i)})),
     checkout:(order)=>setState(s=>s.cart.length===0?s:({...s,cart:[],orders:[{...order,...(s.demoAccountId?{customerDemoId:s.demoAccountId}:{}),status:'scheduled',id:`M${Date.now().toString().slice(-6)}`,items:s.demoAccountId?priceDemoCart(s.cart,s.branchId,s.catalogDemo??emptyDemoCatalog):s.cart,branchId:s.branchId,messages:[{text:'Olá! Recebemos seu pedido. Esta é uma conversa de demonstração — deixe sua mensagem por aqui.',customer:false}]},...s.orders]})),
+    review:(id,rating,text)=>setState(s=>({...s,orders:s.orders.map(o=>o.id===id?{...o,review:{rating:Math.min(5,Math.max(1,Math.round(rating))),text:text.slice(0,500)}}:o)})),
     message:(id,text)=>setState(s=>({...s,orders:s.orders.map(o=>o.id===id?{...o,messages:[...o.messages,{text,customer:true},{text:'Mensagem registrada na demonstração. Em uma loja real, nossa equipe responderia por aqui.',customer:false}]}:o)})),
   };
   return <Context.Provider value={store}>{children}</Context.Provider>;
