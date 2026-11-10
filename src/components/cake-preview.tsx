@@ -12,7 +12,7 @@ export function cakeDimensions(config: CakeConfig) {
 
 export const cakeCatalogImage = (key: string) => closestCakeImage(catalogConfig(key)).url;
 export function cakePreviewImage(config: CakeConfig): string {
-  if (config.frosting === 'rose' && supportsRoseFrosting(config)) {
+  if (config.frosting === 'rose' && config.edibleFlowers && config.redBerries && supportsRoseFrosting(config)) {
     const fillings = fillingOrder.flatMap((flavor, index) => config.fillings.includes(flavor) ? [index] : []).join('-');
     const shape = config.shape === 'Quadrado' ? 'square' : config.shape === 'Coração' ? 'heart' : 'round';
     const dough = config.dough === 'Chocolate' ? 'chocolate' : config.dough === 'Baunilha' ? 'vanilla' : 'velvet';
@@ -23,7 +23,8 @@ export function cakePreviewImage(config: CakeConfig): string {
 }
 
 export function CakePreview({ config }: { config: CakeConfig }) {
-  useEffect(() => { preloadCakeImages(); }, []);
+  const selectedImage = cakePreviewImage(config);
+  useEffect(() => { preloadCakeImages(config); }, [selectedImage]);
   const dimensions = cakeDimensions(config);
   return <div className="cake-studio" aria-label="Prévia do bolo personalizado">
     <div className="studio-heading"><span className="eyebrow">Ateliê Maison</span><span className="studio-live"><span />Sua criação</span></div>
