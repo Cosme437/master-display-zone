@@ -23,6 +23,7 @@ function CakeBuilder() {
     set('fillings', toggleFilling(config.fillings, flavor));
   };
   const addCake = () => {
+    if (!requireSignIn()) return;
     store.add({ id: `cake-${Date.now()}`, name: 'Bolo personalizado', description: `${config.tiers} ${config.tiers === 2 ? 'andares' : 'andar'} · ${config.shape} · ${cakeDimensions(config)} · ${config.dough} · ${config.fillings.join(' + ')} · Cobertura ${cakeFrostingName(config)}${config.edibleFlowers ? ' · Flores' : ''}${config.redBerries ? ' · Frutas vermelhas' : ''}`, image: cakePreviewImage(config), price: cakePrice(config), cake: config });
     toast.success('Seu bolo foi adicionado ao carrinho!');
   };
