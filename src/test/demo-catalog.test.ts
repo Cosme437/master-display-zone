@@ -15,3 +15,11 @@ describe('Demo administrator catalog rules',()=>{
  it('allows only demo administrators to activate campaigns',()=>expect(()=>saveDemoCampaign(demoAccounts[3],emptyDemoCatalog,campaign)).toThrow());
  it('refreshes cart prices and blocks withdrawn cart items',()=>{const i={id:'bread',name:'Bread',description:'',image:'',quantity:2,price:28};const c=saveDemoProduct(demoAccounts[2],emptyDemoCatalog,{...row,hidden:true});expect(priceDemoCart([i],'jardins',c)[0]?.price).toBe(19.9);expect(demoCartBlocker([i],'jardins',c,'2026-11-10')).not.toBeNull();});
 });
+import {seededDemoCatalog,saveDemoStock} from '@/lib/demo-catalog';
+import {normalizeDemoStatus} from '@/lib/demo-accounts';
+describe('seasonal seed, staff stock and order statuses',()=>{
+ it('shows Natal test items in November 2026 and hides paused Junina items',()=>{expect(demoAvailability('veludo-real','jardins',seededDemoCatalog,'2026-11-10').visible).toBe(true);expect(demoAvailability('orgulho-mineiro','jardins',seededDemoCatalog,'2026-11-10').visible).toBe(false);});
+ it('lets employees mark stock sold out in their own branch only',()=>{const c=saveDemoStock(demoAccounts[3],seededDemoCatalog,'bread','jardins','ESGOTADO');expect(demoAvailability('bread','jardins',c,'2026-11-10').available).toBe(false);expect(()=>saveDemoStock(demoAccounts[3],seededDemoCatalog,'bread','moema','ESGOTADO')).toThrow();});
+ it('does not let customers change stock',()=>{for(const a of [demoAccounts[0],demoAccounts[1]])expect(()=>saveDemoStock(a,seededDemoCatalog,'bread','jardins','ESGOTADO')).toThrow();});
+ it('maps legacy statuses to the four new ones',()=>{expect(normalizeDemoStatus('pending')).toBe('scheduled');expect(normalizeDemoStatus('ready')).toBe('delivering');expect(normalizeDemoStatus('cancelled')).toBe('cancelled');});
+});

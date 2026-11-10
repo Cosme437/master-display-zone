@@ -1,4 +1,5 @@
 # Bakery frontend
+- [x] Seed test seasonal campaigns, employee stock panel, four order statuses (staff edit, customers view).
 
 - [x] Complete isolated administrator catalog, stock, price and seasonal campaign management; verify storefront, persistence, checkout blocking and employee restriction.
 
