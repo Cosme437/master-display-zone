@@ -1,11 +1,11 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import { branches, refreshCatalogItems, type CartItem } from '@/lib/bakery';
-import { demoAccounts, seedDemoOrders, type DemoAccount } from '@/lib/demo-accounts';
+import { canManageDemoOrder, demoAccounts, seedDemoOrders, type DemoAccount } from '@/lib/demo-accounts';
 
 export type Order = { id:string; items:CartItem[]; total:number; method:string; date:string; time:string; address:string; branchId:string; customerDemoId?:string; status?:'pending'|'preparing'|'ready'; messages:{text:string;customer:boolean}[] };
 type State = { branchId:string; selected:boolean; cart:CartItem[]; orders:Order[]; demoAccountId?:string; demoCarts?:Record<string,CartItem[]> };
 const initial:State = {branchId:'jardins',selected:false,cart:[],orders:[]};
-type Store = State & { ready:boolean; demoAccount:DemoAccount|null; startDemo:(id:string)=>void; endDemo:()=>void; setBranch:(id:string)=>void; add:(item:Omit<CartItem,'quantity'>)=>void; prepare:(id:string,preparation:'fried'|'frozen')=>void; quantity:(id:string,quantity:number)=>void; checkout:(order:Omit<Order,'id'|'items'|'messages'|'branchId'>)=>void; message:(id:string,text:string)=>void };
+type Store = State & { ready:boolean; demoAccount:DemoAccount|null; demoStatus:(id:string,status:'pending'|'preparing'|'ready')=>void; startDemo:(id:string)=>void; endDemo:()=>void; setBranch:(id:string)=>void; add:(item:Omit<CartItem,'quantity'>)=>void; prepare:(id:string,preparation:'fried'|'frozen')=>void; quantity:(id:string,quantity:number)=>void; checkout:(order:Omit<Order,'id'|'items'|'messages'|'branchId'>)=>void; message:(id:string,text:string)=>void };
 const Context = createContext<Store|null>(null);
 export function BakeryProvider({children}:{children:ReactNode}) {
   const [state,setState] = useState<State>(initial);
@@ -13,6 +13,7 @@ export function BakeryProvider({children}:{children:ReactNode}) {
   useEffect(()=>{try { const raw=localStorage.getItem('maison-demo-v1'); if(raw) { const data=JSON.parse(raw); if(Array.isArray(data.cart)&&Array.isArray(data.orders)&&branches.some(b=>b.id===data.branchId)) setState({...data,cart:refreshCatalogItems(data.cart),orders:data.orders.map((o:Order)=>({...o,items:refreshCatalogItems(o.items)}))}); } } catch { /* Use clean demo state if storage is unavailable. */ } setReady(true);},[]);
   useEffect(()=>{if(ready) { try {localStorage.setItem('maison-demo-v1',JSON.stringify(state));} catch { /* The current session remains usable without persistence. */ } }},[state,ready]);
   const store:Store = {...state,ready,demoAccount:demoAccounts.find(a=>a.id===state.demoAccountId)??null,
+    demoStatus:(id,status)=>setState(s=>{const a=demoAccounts.find(a=>a.id===s.demoAccountId);if(!a)return s;return {...s,orders:s.orders.map(o=>o.id===id&&o.customerDemoId&&canManageDemoOrder(a,o)?{...o,status}:o)};}),
     startDemo:(id)=>{const account=demoAccounts.find(a=>a.id===id);if(!account)return;setState(s=>({...s,demoAccountId:id,branchId:account.branchId,selected:true,demoCarts:{...s.demoCarts,[s.demoAccountId??'guest']:s.cart},cart:refreshCatalogItems(s.demoCarts?.[id]??[]),orders:s.orders.some(o=>o.customerDemoId)?s.orders:[...seedDemoOrders(),...s.orders]}));},
     endDemo:()=>setState(s=>({...s,demoAccountId:undefined,demoCarts:{...s.demoCarts,[s.demoAccountId??'guest']:s.cart},cart:refreshCatalogItems(s.demoCarts?.guest??[])})),
     setBranch:(id)=>setState(s=>({...s,branchId:id,selected:true})),
