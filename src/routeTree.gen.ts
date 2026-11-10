@@ -12,9 +12,11 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AvaliacoesRouteImport } from './routes/avaliacoes'
 import { Route as CarrinhoRouteImport } from './routes/carrinho'
 import { Route as MontarBoloRouteImport } from './routes/montar-bolo'
 import { Route as PedidosRouteImport } from './routes/pedidos'
+import { Route as PromocoesRouteImport } from './routes/promocoes'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as TestesRouteImport } from './routes/testes'
 import { Route as AuthenticatedAtendimentoRouteImport } from './routes/_authenticated/atendimento'
@@ -36,6 +38,11 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AvaliacoesRoute = AvaliacoesRouteImport.update({
+  id: '/avaliacoes',
+  path: '/avaliacoes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CarrinhoRoute = CarrinhoRouteImport.update({
   id: '/carrinho',
   path: '/carrinho',
@@ -49,6 +56,11 @@ const MontarBoloRoute = MontarBoloRouteImport.update({
 const PedidosRoute = PedidosRouteImport.update({
   id: '/pedidos',
   path: '/pedidos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PromocoesRoute = PromocoesRouteImport.update({
+  id: '/promocoes',
+  path: '/promocoes',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
@@ -86,9 +98,11 @@ const AuthenticatedLojaRoute = AuthenticatedLojaRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/avaliacoes': typeof AvaliacoesRoute
   '/carrinho': typeof CarrinhoRoute
   '/montar-bolo': typeof MontarBoloRoute
   '/pedidos': typeof PedidosRoute
+  '/promocoes': typeof PromocoesRoute
   '/reset-password': typeof ResetPasswordRoute
   '/testes': typeof TestesRoute
   '/atendimento': typeof AuthenticatedAtendimentoRoute
@@ -99,9 +113,11 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/avaliacoes': typeof AvaliacoesRoute
   '/carrinho': typeof CarrinhoRoute
   '/montar-bolo': typeof MontarBoloRoute
   '/pedidos': typeof PedidosRoute
+  '/promocoes': typeof PromocoesRoute
   '/reset-password': typeof ResetPasswordRoute
   '/testes': typeof TestesRoute
   '/atendimento': typeof AuthenticatedAtendimentoRoute
@@ -114,9 +130,11 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/avaliacoes': typeof AvaliacoesRoute
   '/carrinho': typeof CarrinhoRoute
   '/montar-bolo': typeof MontarBoloRoute
   '/pedidos': typeof PedidosRoute
+  '/promocoes': typeof PromocoesRoute
   '/reset-password': typeof ResetPasswordRoute
   '/testes': typeof TestesRoute
   '/_authenticated/atendimento': typeof AuthenticatedAtendimentoRoute
@@ -129,9 +147,11 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/avaliacoes'
     | '/carrinho'
     | '/montar-bolo'
     | '/pedidos'
+    | '/promocoes'
     | '/reset-password'
     | '/testes'
     | '/atendimento'
@@ -142,9 +162,11 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/avaliacoes'
     | '/carrinho'
     | '/montar-bolo'
     | '/pedidos'
+    | '/promocoes'
     | '/reset-password'
     | '/testes'
     | '/atendimento'
@@ -156,9 +178,11 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/avaliacoes'
     | '/carrinho'
     | '/montar-bolo'
     | '/pedidos'
+    | '/promocoes'
     | '/reset-password'
     | '/testes'
     | '/_authenticated/atendimento'
@@ -171,9 +195,11 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  AvaliacoesRoute: typeof AvaliacoesRoute
   CarrinhoRoute: typeof CarrinhoRoute
   MontarBoloRoute: typeof MontarBoloRoute
   PedidosRoute: typeof PedidosRoute
+  PromocoesRoute: typeof PromocoesRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   TestesRoute: typeof TestesRoute
 }
@@ -201,6 +227,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/avaliacoes': {
+      id: '/avaliacoes'
+      path: '/avaliacoes'
+      fullPath: '/avaliacoes'
+      preLoaderRoute: typeof AvaliacoesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/carrinho': {
       id: '/carrinho'
       path: '/carrinho'
@@ -220,6 +253,13 @@ declare module '@tanstack/react-router' {
       path: '/pedidos'
       fullPath: '/pedidos'
       preLoaderRoute: typeof PedidosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/promocoes': {
+      id: '/promocoes'
+      path: '/promocoes'
+      fullPath: '/promocoes'
+      preLoaderRoute: typeof PromocoesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/reset-password': {
@@ -288,9 +328,11 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  AvaliacoesRoute: AvaliacoesRoute,
   CarrinhoRoute: CarrinhoRoute,
   MontarBoloRoute: MontarBoloRoute,
   PedidosRoute: PedidosRoute,
+  PromocoesRoute: PromocoesRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   TestesRoute: TestesRoute,
 }
