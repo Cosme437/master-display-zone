@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { existsSync } from 'node:fs';
-import { cakeImageFiles, getCakeImage } from '@/lib/cake-images';
+import { cakeImageFiles, getCakeImage, closestCakeImage } from '@/lib/cake-images';
 import { catalogCakes, catalogConfig } from '@/lib/bakery';
 describe('getCakeImage', () => {
   it('maps the buttons to the exact uploaded filename', () => {
@@ -12,6 +12,30 @@ describe('getCakeImage', () => {
     expect(cakeImageFiles).toHaveLength(19);
     for (const key of catalogCakes) { const c = catalogConfig(key); const url = getCakeImage(c.tiers!, c.dough, c.fillings, c.shape, c.frosting!); expect(url, key).not.toBeNull(); expect(existsSync(`public${url}`)).toBe(true); }
   });
+});
+describe('independent cake decorations', () => {
+  for (const key of catalogCakes) {
+    const config = catalogConfig(key);
+    it(`${key}: berries without flowers`, () => {
+      const image = closestCakeImage({ ...config, edibleFlowers: false, redBerries: true });
+      expect(image.url).toMatch(/-frutas\.webp$/);
+      expect(existsSync(`public${image.url}`)).toBe(true);
+    });
+    it(`${key}: flowers without berries`, () => {
+      const image = closestCakeImage({ ...config, edibleFlowers: true, redBerries: false });
+      expect(image.url).toMatch(/-flores\.webp$/);
+      expect(existsSync(`public${image.url}`)).toBe(true);
+    });
+    it(`${key}: no decoration`, () => {
+      const image = closestCakeImage({ ...config, edibleFlowers: false, redBerries: false });
+      expect(image.url).toMatch(/-lisa\.webp$/);
+      expect(existsSync(`public${image.url}`)).toBe(true);
+    });
+    it(`${key}: both decorations`, () => {
+      const image = closestCakeImage({ ...config, edibleFlowers: true, redBerries: true });
+      expect(image.url).toBe(getCakeImage(config.tiers ?? 1, config.dough, config.fillings, config.shape, config.frosting ?? 'ivory'));
+    });
+  }
 });
 import { closestCakeImage } from '@/lib/cake-images';
 import { defaultCake } from '@/lib/bakery';

@@ -2,7 +2,6 @@ import { createFileRoute, Link } from '@tanstack/react-router';
 import { useState } from 'react';
 import { ArrowLeft, ArrowRight, Check, Cherry, ChevronDown, Circle, Flower2, Heart, Layers3, RotateCcw, ShoppingBag, Square } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Slider } from '@/components/ui/slider';
 import { CakePreview, cakePreviewImage, cakeCatalogImage, cakeDimensions } from '@/components/cake-preview';
 import { useBakery } from '@/components/bakery-store';
