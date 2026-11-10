@@ -37,7 +37,6 @@ describe('independent cake decorations', () => {
     });
   }
 });
-import { closestCakeImage } from '@/lib/cake-images';
 import { defaultCake } from '@/lib/bakery';
 describe('closestCakeImage', () => {
   it('always returns one of the 19 new photos', () => {
