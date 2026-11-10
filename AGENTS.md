@@ -17,5 +17,7 @@
 - Assign new accounts the client role only; elevated access requires an existing administrator, and initial administrator provisioning must be explicitly authorized for a named account.
 - Store stock settings per storefront branch and seasonal campaign settings in Cloud with admin-only writes; apply availability to the simulated cart without decrementing real stock because checkout remains demonstrative.
 - Keep combo preparation in each cart item and validate it at checkout so fried/frozen choices persist into orders without altering existing prices or delivery fees.
+- Public test logins select isolated browser-only demo personas, never Auth sessions or real roles; demo management must never call private Cloud mutations.
+- Preserve catalog product IDs when renaming or rephotographing products, and refresh persisted cart imagery on hydration so stock links and customer carts remain consistent.
 
 - Outer frosting travels in CakeConfig with a legacy ivory default; white, chocolate and naked are always selectable and the preview always shows one of the corrected photos in public/bolos (exact match via getCakeImage, otherwise the closest photo labelled as illustrative), because the user rejected the old variant photos.

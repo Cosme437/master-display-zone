@@ -1,18 +1,18 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
-import { ArrowRight, CakeSlice, Coffee, Croissant, Grid2X2, Heart, Leaf, PartyPopper, Plus, Search, Sparkles, Truck, Wheat, X } from 'lucide-react';
+import { ArrowRight, CakeSlice, Croissant, Grid2X2, Heart, Leaf, PartyPopper, Plus, Search, Sparkles, Truck, Wheat, X } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useBakery } from '@/components/bakery-store';
 import { money, pageHead, products } from '@/lib/bakery';
 import hero from '@/assets/bakery-hero.jpg';
-import cake from '@/assets/cake.jpg';
+import cake from '@/assets/fatia-jardim-morango.jpg';
 import { toast } from 'sonner';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { catalogSettingsQuery } from '@/lib/store-catalog-queries';
 import { localDate, productAvailability, stockStatuses } from '@/lib/store-catalog';
 
 export const Route=createFileRoute('/')({head:()=>pageHead('Nossa vitrine','Descubra pães artesanais, doces delicados e bolos feitos com carinho na Maison.'),loader:({context})=>context.queryClient.ensureQueryData(catalogSettingsQuery()),component:Index});
-const categories=[{name:'Todos',icon:Grid2X2},{name:'Pães',icon:Croissant},{name:'Doces',icon:Heart},{name:'Salgados',icon:Wheat},{name:'Bebidas',icon:Coffee},{name:'Combos',icon:PartyPopper},{name:'Bolos',icon:CakeSlice}];
+const categories=[{name:'Todos',icon:Grid2X2},{name:'Pães',icon:Croissant},{name:'Doces',icon:Heart},{name:'Salgados',icon:Wheat},{name:'Combos',icon:PartyPopper},{name:'Bolos',icon:CakeSlice}];
 function Index() {
   const [category,setCategory]=useState('Todos');const [query,setQuery]=useState(''); const [sort,setSort]=useState('favorites'); const store=useBakery();
   const {data:catalog}=useSuspenseQuery(catalogSettingsQuery());
