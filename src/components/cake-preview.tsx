@@ -23,6 +23,7 @@ export function cakePreviewImage(config: CakeConfig): string {
 }
 
 export function CakePreview({ config }: { config: CakeConfig }) {
+  useEffect(() => { preloadCakeImages(); }, []);
   const dimensions = cakeDimensions(config);
   return <div className="cake-studio" aria-label="Prévia do bolo personalizado">
     <div className="studio-heading"><span className="eyebrow">Ateliê Maison</span><span className="studio-live"><span />Sua criação</span></div>
