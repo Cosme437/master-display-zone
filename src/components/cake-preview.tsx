@@ -1,5 +1,6 @@
 import { cakeFrostingName, catalogConfig, supportsRoseFrosting, type CakeConfig } from '@/lib/bakery';
-import { closestCakeImage } from '@/lib/cake-images';
+import { closestCakeImage, preloadCakeImages } from '@/lib/cake-images';
+import { useEffect } from 'react';
 import { Cherry, Flower2, Layers3, Ruler } from 'lucide-react';
 
 const frostings = import.meta.glob<string>('../assets/cake-frosting/*.webp', { eager: true, query: '?url', import: 'default' });
@@ -22,6 +23,7 @@ export function cakePreviewImage(config: CakeConfig): string {
 }
 
 export function CakePreview({ config }: { config: CakeConfig }) {
+  useEffect(() => { preloadCakeImages(); }, []);
   const dimensions = cakeDimensions(config);
   return <div className="cake-studio" aria-label="Prévia do bolo personalizado">
     <div className="studio-heading"><span className="eyebrow">Ateliê Maison</span><span className="studio-live"><span />Sua criação</span></div>
