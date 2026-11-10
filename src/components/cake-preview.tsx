@@ -1,5 +1,6 @@
 import { cakeFrostingName, catalogConfig, supportsRoseFrosting, type CakeConfig } from '@/lib/bakery';
-import { closestCakeImage } from '@/lib/cake-images';
+import { closestCakeImage, preloadCakeImages } from '@/lib/cake-images';
+import { useEffect } from 'react';
 import { Cherry, Flower2, Layers3, Ruler } from 'lucide-react';
 
 const frostings = import.meta.glob<string>('../assets/cake-frosting/*.webp', { eager: true, query: '?url', import: 'default' });

@@ -58,9 +58,15 @@ export function closestCakeImage(config: CakeConfig): { url: string; exact: bool
   const frosting = frostingSlug[config.frosting ?? 'ivory'], tiers = config.tiers ?? 1;
   let best = entries[0]!, bestScore = -Infinity;
   for (const e of entries) {
-    const score = (e.shape === shape ? 16 : 0) + (e.frosting === frosting ? 8 : 0) + (e.dough === dough ? 4 : 0) + (e.tiers === tiers ? 2 : 0)
-      + e.fillings.filter(f => fillings.includes(f)).length * 1.5 - e.fillings.filter(f => !fillings.includes(f)).length * 0.5;
+    const score = (e.dough === dough ? 6 : 0) + (e.tiers === tiers ? 5 : 0) + (e.shape === shape ? 4.5 : 0) + (e.frosting === frosting ? 4 : 0)
+      + e.fillings.filter(f => fillings.includes(f)).length * 2 - e.fillings.filter(f => !fillings.includes(f)).length;
     if (score > bestScore) { best = e; bestScore = score; }
   }
   return { url: `/bolos/${best.file}.webp`, exact: false };
+}
+
+/** Warm the browser cache so switching options swaps the photo instantly. */
+export function preloadCakeImages() {
+  if (typeof window === 'undefined') return;
+  for (const f of cakeImageFiles) { const i = new Image(); i.decoding = 'async'; i.src = `/bolos/${f}.webp`; }
 }
