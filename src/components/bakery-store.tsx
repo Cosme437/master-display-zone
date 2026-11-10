@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from '
 import { branches, refreshCatalogItems, type CartItem } from '@/lib/bakery';
 import {seededDemoCatalog as emptyDemoCatalog,withSeasonalSeed,saveDemoStock,saveDemoProduct,saveDemoCampaign,priceDemoCart,type DemoCatalog,type DemoProductSetting} from '@/lib/demo-catalog';
 import type {Campaign} from '@/lib/store-catalog';
-import { canManageDemoOrder, demoAccounts, seedDemoOrders, type DemoAccount } from '@/lib/demo-accounts';
+import { canManageDemoOrder, demoAccounts, seedDemoOrders, normalizeDemoStatus, type DemoAccount, type DemoOrderStatus } from '@/lib/demo-accounts';
 
 export type Order = { id:string; items:CartItem[]; total:number; method:string; date:string; time:string; address:string; branchId:string; customerDemoId?:string; status?:DemoOrderStatus; messages:{text:string;customer:boolean}[] };
 type State = { branchId:string; selected:boolean; cart:CartItem[]; orders:Order[]; demoAccountId?:string|undefined; demoCarts?:Record<string,CartItem[]>; catalogDemo?:DemoCatalog };
