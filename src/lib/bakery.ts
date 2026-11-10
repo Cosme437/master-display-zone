@@ -1,9 +1,13 @@
-import croissant from '@/assets/croissant.jpg';
-import cake from '@/assets/cake.jpg';
-import bread from '@/assets/bread.jpg';
-import cheese from '@/assets/cheese.jpg';
-import brownie from '@/assets/brownie.jpg';
-import coffee from '@/assets/coffee.jpg';
+import croissant from '@/assets/croissant-fornada-dourada.jpg';
+import cake from '@/assets/fatia-jardim-morango.jpg';
+import bread from '@/assets/pao-raizes-da-casa.jpg';
+import cheese from '@/assets/pao-queijo-perolas-serra.jpg';
+import brownie from '@/assets/brownie-cacau-afeto.jpg';
+import frances from '@/assets/pao-frances-amanhecer.jpg';
+import brioche from '@/assets/brioche-nuvem-manteiga.jpg';
+import integral from '@/assets/pao-integral-campo.jpg';
+import focaccia from '@/assets/focaccia-jardim-alecrim.jpg';
+import leite from '@/assets/pao-leite-laco-carinho.jpg';
 import comboFesta from '@/assets/combo-festa-coxinhas-bolo-chocolate.jpg.asset.json';
 import piscinaDaPaixao from '@/assets/torta-piscina-da-paixao-morango.jpg.asset.json';
 import tortaLimao from '@/assets/torta-limao-suspiro-de-verao.jpg';
@@ -27,12 +31,16 @@ import paoQueijoRecheado from '@/assets/pao-queijo-recheado-orgulho.jpg';
 
 export const money = (value: number) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
 export const products = [
-  { id:'croissant', name:'Croissant de manteiga', description:'Folhado delicado, manteiga de verdade.', price:12.9, category:'Pães', image:croissant, tag:'Mais amado' },
-  { id:'cake', name:'Fatia de bolo de morango', description:'Massa leve, creme e morangos frescos.', price:24.9, category:'Bolos', image:cake, tag:'Feito com carinho' },
-  { id:'bread', name:'Pão de fermentação natural', description:'Casca crocante e 24h de fermentação.', price:28, category:'Pães', image:bread, tag:'' },
-  { id:'cheese', name:'Pão de queijo artesanal', description:'Queijo da Serra, quentinho por dentro.', price:8.5, category:'Salgados', image:cheese, tag:'' },
-  { id:'brownie', name:'Brownie de chocolate', description:'Chocolate intenso e um centro macio.', price:16.9, category:'Doces', image:brownie, tag:'Favorito da casa' },
-  { id:'coffee', name:'Cappuccino da casa', description:'Espresso especial e leite cremoso.', price:14.9, category:'Bebidas', image:coffee, tag:'' },
+  { id:'croissant', name:'Fornada Dourada', description:'Croissant de manteiga com delicadas camadas crocantes.', price:12.9, category:'Pães', image:croissant, tag:'Mais amado' },
+  { id:'cake', name:'Jardim de Morangos', description:'Fatia de bolo de baunilha, creme e morangos frescos.', price:24.9, category:'Bolos', image:cake, tag:'Feito com carinho' },
+  { id:'bread', name:'Raízes da Casa', description:'Pão de fermentação natural com casca crocante.', price:28, category:'Pães', image:bread, tag:'' },
+  { id:'cheese', name:'Pérolas da Serra', description:'Pão de queijo artesanal, quentinho por dentro.', price:8.5, category:'Salgados', image:cheese, tag:'' },
+  { id:'brownie', name:'Cacau & Afeto', description:'Brownie de chocolate intenso e centro macio.', price:16.9, category:'Doces', image:brownie, tag:'Favorito da casa' },
+  { id:'pao-frances', name:'Amanhecer Crocante', description:'Pão francês de casca dourada e miolo leve · unidade.', price:2.5, category:'Pães', image:frances, tag:'Novidade' },
+  { id:'brioche', name:'Nuvem de Manteiga', description:'Brioche amanteigado, macio e delicado · pão inteiro.', price:24.9, category:'Pães', image:brioche, tag:'Novidade' },
+  { id:'pao-integral', name:'Essência do Campo', description:'Pão integral com aveia e sementes · pão inteiro.', price:22.9, category:'Pães', image:integral, tag:'Novidade' },
+  { id:'focaccia', name:'Jardim de Alecrim', description:'Focaccia artesanal com azeite e alecrim · porção.', price:16.9, category:'Pães', image:focaccia, tag:'Novidade' },
+  { id:'pao-de-leite', name:'Laço de Carinho', description:'Pão de leite com miolo fofinho · unidade.', price:4.9, category:'Pães', image:leite, tag:'Novidade' },
   { id:'combo-festa', name:'Combo de festa', description:'Caixa de coxinhas douradas, bolinhas de queijo e bolo de chocolate.', price:189.9, category:'Combos', image:comboFesta.url, tag:'Para compartilhar' },
   { id:'piscina-da-paixao', name:'Piscina da Paixão', description:'Torta de morango com creme de baunilha e toque de pâtisserie fina.', price:149.9, category:'Bolos', image:piscinaDaPaixao.url, tag:'Novidade' },
   { id:'suspiro-de-verao', name:'Suspiro de Verão', description:'Torta de limão com merengue tostado na hora.', price:119.9, category:'Doces', image:tortaLimao, tag:'' },
@@ -75,13 +83,14 @@ export function catalogKey(config:CakeConfig, frosting:CakeFrosting = config.fro
 export function supportsRoseFrosting(config:CakeConfig) { return config.tiers===2 && Boolean(config.edibleFlowers && config.redBerries) && config.fillings.length===2 && config.fillings.includes('Doce de Leite') && config.fillings.includes('Morango'); }
 export function supportsFrosting(config:CakeConfig, frosting:CakeFrosting) { return frosting==='rose' ? supportsRoseFrosting(config) : true; }
 export function effectiveFrosting(config:CakeConfig):CakeFrosting { const f = config.frosting ?? 'ivory'; return supportsFrosting(config, f) ? f : 'ivory'; }
-export function cakeFrostingName(config:CakeConfig) { return cakeFrostings.find(f=>f.id===effectiveFrosting(config))!.name; }
+export function cakeFrostingName(config:CakeConfig) { return cakeFrostings.find(f=>f.id===effectiveFrosting(config))?.name ?? 'Branca'; }
 export type CakeConfig = { shape:string; size:15|20|25; dough:string; fillings:string[]; note:string; tiers?:1|2; edibleFlowers?:boolean; redBerries?:boolean; frosting?:CakeFrosting };
 export const defaultCake: CakeConfig = { shape:'Redondo', size:15, dough:'Baunilha', fillings:[], note:'' };
 export const cakeSizes = [{size:15 as const,slices:10,price:120},{size:20 as const,slices:20,price:180},{size:25 as const,slices:30,price:240}];
 export function toggleFilling(current:string[], flavor:string) { return current.includes(flavor) ? current.filter(f=>f!==flavor) : current.length<2 ? [...current,flavor] : current; }
 export function cakePrice(config:CakeConfig) { return (cakeSizes.find(s=>s.size===config.size)?.price ?? 120) + (config.shape==='Coração'?20:0) + (config.dough==='Red Velvet'?15:0) + config.fillings.length*10; }
 export type CartItem = { id:string; name:string; description:string; price:number; image:string; quantity:number; cake?:CakeConfig; productId?:string; requiresPreparation?:boolean; preparation?:'fried'|'frozen' };
+export function refreshCatalogItems(items:CartItem[]):CartItem[] {return items.filter(i=>i.productId!=='coffee'&&i.id!=='coffee').map(i=>{if(i.cake)return i;const p=products.find(p=>p.id===(i.productId??i.id));return p?{...i,name:p.name,description:p.description,image:p.image}:i;});}
 export const subtotal = (items:CartItem[]) => items.reduce((sum,item)=>sum+item.price*item.quantity,0);
 export const deliveryFee = (method:string) => method==='delivery'?12:0;
 export const pageHead = (title:string, description:string) => ({ meta:[{title:`${title} | Maison — Padaria & Doceria`},{name:'description',content:description},{property:'og:title',content:`${title} | Maison`},{property:'og:description',content:description},{property:'og:type',content:'website'},{name:'twitter:card',content:'summary_large_image'}] });

@@ -1,5 +1,9 @@
 # Bakery frontend
 
+- [x] Renew five legacy product photos/names, add five breads and remove beverages.
+- [x] Add four isolated demo personas with visible login access and seeded orders; verify all personas, status persistence and checkout readback.
+- [ ] First administrator authorization — blocked until a registered account email is supplied.
+
 - [x] Add stock management, fried/frozen combo choices and seasonal menus to the bakery, preserving demonstrative checkout.
 - [x] Verify availability rules, required combo preparation through checkout and client access restrictions.
 - [ ] Verify administrator stock/campaign editing end to end — waiting for explicitly authorized first administrator.
