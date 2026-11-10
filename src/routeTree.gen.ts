@@ -16,6 +16,7 @@ import { Route as CarrinhoRouteImport } from './routes/carrinho'
 import { Route as MontarBoloRouteImport } from './routes/montar-bolo'
 import { Route as PedidosRouteImport } from './routes/pedidos'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as TestesRouteImport } from './routes/testes'
 import { Route as AuthenticatedAtendimentoRouteImport } from './routes/_authenticated/atendimento'
 import { Route as AuthenticatedContaRouteImport } from './routes/_authenticated/conta'
 import { Route as AuthenticatedGestaoRouteImport } from './routes/_authenticated/gestao'
@@ -55,6 +56,11 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
   path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TestesRoute = TestesRouteImport.update({
+  id: '/testes',
+  path: '/testes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedAtendimentoRoute =
   AuthenticatedAtendimentoRouteImport.update({
     id: '/atendimento',
@@ -84,6 +90,7 @@ export interface FileRoutesByFullPath {
   '/montar-bolo': typeof MontarBoloRoute
   '/pedidos': typeof PedidosRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/testes': typeof TestesRoute
   '/atendimento': typeof AuthenticatedAtendimentoRoute
   '/conta': typeof AuthenticatedContaRoute
   '/gestao': typeof AuthenticatedGestaoRoute
@@ -96,6 +103,7 @@ export interface FileRoutesByTo {
   '/montar-bolo': typeof MontarBoloRoute
   '/pedidos': typeof PedidosRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/testes': typeof TestesRoute
   '/atendimento': typeof AuthenticatedAtendimentoRoute
   '/conta': typeof AuthenticatedContaRoute
   '/gestao': typeof AuthenticatedGestaoRoute
@@ -110,6 +118,7 @@ export interface FileRoutesById {
   '/montar-bolo': typeof MontarBoloRoute
   '/pedidos': typeof PedidosRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/testes': typeof TestesRoute
   '/_authenticated/atendimento': typeof AuthenticatedAtendimentoRoute
   '/_authenticated/conta': typeof AuthenticatedContaRoute
   '/_authenticated/gestao': typeof AuthenticatedGestaoRoute
@@ -124,6 +133,7 @@ export interface FileRouteTypes {
     | '/montar-bolo'
     | '/pedidos'
     | '/reset-password'
+    | '/testes'
     | '/atendimento'
     | '/conta'
     | '/gestao'
@@ -136,6 +146,7 @@ export interface FileRouteTypes {
     | '/montar-bolo'
     | '/pedidos'
     | '/reset-password'
+    | '/testes'
     | '/atendimento'
     | '/conta'
     | '/gestao'
@@ -149,6 +160,7 @@ export interface FileRouteTypes {
     | '/montar-bolo'
     | '/pedidos'
     | '/reset-password'
+    | '/testes'
     | '/_authenticated/atendimento'
     | '/_authenticated/conta'
     | '/_authenticated/gestao'
@@ -163,6 +175,7 @@ export interface RootRouteChildren {
   MontarBoloRoute: typeof MontarBoloRoute
   PedidosRoute: typeof PedidosRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  TestesRoute: typeof TestesRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -214,6 +227,13 @@ declare module '@tanstack/react-router' {
       path: '/reset-password'
       fullPath: '/reset-password'
       preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/testes': {
+      id: '/testes'
+      path: '/testes'
+      fullPath: '/testes'
+      preLoaderRoute: typeof TestesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/atendimento': {
@@ -272,6 +292,7 @@ const rootRouteChildren: RootRouteChildren = {
   MontarBoloRoute: MontarBoloRoute,
   PedidosRoute: PedidosRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  TestesRoute: TestesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
