@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { CakePreview, cakePreviewImage, cakeCatalogImage, cakeDimensions } from '@/components/cake-preview';
 import { useBakery } from '@/components/bakery-store';
-import { cakePrice, cakeSizes, cakeFrostings, cakeFrostingName, supportsRoseFrosting, supportsFrosting, effectiveFrosting, money, pageHead, catalogCakes, catalogConfig, toggleFilling, type CakeConfig } from '@/lib/bakery';
+import { cakePrice, cakeSizes, cakeFrostings, cakeFrostingName, money, pageHead, catalogCakes, catalogConfig, type CakeConfig } from '@/lib/bakery';
 import { toast } from 'sonner';
 import { cakeOptionAvailability, snapCakeToPhoto } from '@/lib/cake-images';
 import { useRequireSignIn } from '@/components/use-signed-in';
