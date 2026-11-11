@@ -58,26 +58,60 @@ function decorateCakeImage(url: string | null, config: CakeConfig): string | nul
   return url.replace(/\.webp$/, `${suffix}.webp`);
 }
 
-/** Always returns one of the 19 photos: the exact match, or the closest one (shape > frosting > dough > tiers > fillings). */
-export function closestCakeImage(config: CakeConfig): { url: string; exact: boolean } {
-  const exact = cakeImageFor(config);
-  if (exact) return { url: exact, exact: true };
-  const shape = slug(config.shape), dough = slug(config.dough), fillings = config.fillings.map(slug);
-  const frosting = frostingSlug[config.frosting ?? 'ivory'], tiers = config.tiers ?? 1;
-  let best = entries[0], bestScore = -Infinity;
-  if (!best) throw new Error('Cake photo catalog is empty');
-  for (const e of entries) {
-    const score = (e.dough === dough ? 6 : 0) + (e.tiers === tiers ? 5 : 0) + (e.shape === shape ? 4.5 : 0) + (e.frosting === frosting ? 4 : 0)
-      + e.fillings.filter(f => fillings.includes(f)).length * 2 - e.fillings.filter(f => !fillings.includes(f)).length;
-    if (score > bestScore) { best = e; bestScore = score; }
-  }
-  return { url: decorateCakeImage(`/bolos/${best.file}.webp`, config) ?? `/bolos/${best.file}.webp`, exact: false };
+/** Shown when the selection has no real photo; never substitute a different cake. */
+export const cakeSilhouetteImage = '/bolos/silhueta.svg';
+
+/** The exact photo for the selection (with decoration suffix), or the silhouette. */
+export function exactCakeImage(config: CakeConfig): { url: string; exact: boolean } {
+  const url = cakeImageFor(config);
+  return url ? { url, exact: true } : { url: cakeSilhouetteImage, exact: false };
 }
 
-/** Warm the browser cache so switching options swaps the photo instantly. */
+type Entry = (typeof entries)[number];
+const fillingName: Record<string, string> = { 'creme-de-baunilha': 'Creme de Baunilha', 'doce-de-leite': 'Doce de Leite', brigadeiro: 'Brigadeiro', morango: 'Morango' };
+const frostingId: Record<string, CakeFrosting> = { branca: 'ivory', chocolate: 'chocolate', naked: 'naked' };
+const sameSet = (a: string[], b: string[]) => a.length === b.length && a.every(x => b.includes(x));
+const step = (c: CakeConfig) => ({ tiers: c.tiers ?? 1, dough: slug(c.dough), shape: slug(c.shape), fillings: c.fillings.map(slug), frosting: frostingSlug[c.frosting ?? 'ivory'] });
+const matching = (c: CakeConfig, upTo: 'tiers' | 'dough' | 'shape' | 'fillings') => {
+  const s = step(c); const order = ['tiers', 'dough', 'shape', 'fillings'] as const; const n = order.indexOf(upTo);
+  return entries.filter(e => e.tiers === s.tiers && (n < 1 || e.dough === s.dough) && (n < 2 || e.shape === s.shape) && (n < 3 || sameSet(e.fillings, s.fillings)));
+};
+
+/** Which buttons lead to one of the real photos, given the choices made upstream (andares → massa → formato → recheio → cobertura). */
+export function cakeOptionAvailability(config: CakeConfig) {
+  const s = step(config);
+  return {
+    tiers: (t: number) => entries.some(e => e.tiers === t),
+    dough: (d: string) => matching(config, 'tiers').some(e => e.dough === slug(d)),
+    shape: (sh: string) => matching(config, 'dough').some(e => e.shape === slug(sh)),
+    filling: (f: string) => matching(config, 'shape').some(e => e.fillings.includes(slug(f))),
+    frosting: (f: CakeFrosting) => matching(config, 'fillings').some(e => e.frosting === frostingSlug[f]),
+    current: s,
+  };
+}
+
+const toConfig = (c: CakeConfig, e: Entry): CakeConfig => ({ ...c, tiers: e.tiers as 1 | 2, dough: c.dough, fillings: e.fillings.map(f => fillingName[f] ?? f), frosting: frostingId[e.frosting] ?? 'ivory' });
+const dough: Record<string, string> = { baunilha: 'Baunilha', chocolate: 'Chocolate', 'red-velvet': 'Red Velvet' };
+const shape: Record<string, string> = { redondo: 'Redondo', quadrado: 'Quadrado', coracao: 'Coração' };
+
+/** Moves the selection onto the nearest real photo after a change, keeping the user's latest choice. */
+export function snapCakeToPhoto(config: CakeConfig, clickedFilling?: string): CakeConfig {
+  if (cakeImageFor(config)) return config;
+  const s = step(config);
+  let pool = entries.filter(e => e.tiers === s.tiers);
+  for (const k of ['dough', 'shape'] as const) { const n = pool.filter(e => e[k] === s[k]); if (n.length) pool = n; }
+  if (clickedFilling) { const n = pool.filter(e => e.fillings.includes(slug(clickedFilling))); if (n.length) pool = n; }
+  const score = (e: Entry) => (sameSet(e.fillings, s.fillings) ? 10 : 0) + e.fillings.filter(f => s.fillings.includes(f)).length * 2 - e.fillings.filter(f => !s.fillings.includes(f)).length + (e.frosting === s.frosting ? 3 : 0);
+  const best = [...pool].sort((a, b) => score(b) - score(a))[0];
+  if (!best) return config;
+  return { ...toConfig(config, best), dough: dough[best.dough] ?? config.dough, shape: shape[best.shape] ?? config.shape };
+}
+
+/** Warm the browser cache so switching decorations swaps the photo instantly. */
 export function preloadCakeImages(config: CakeConfig) {
   if (typeof window === 'undefined') return;
-  const base = closestCakeImage(config).url.replace(/-(frutas|flores|lisa)\.webp$/, '.webp');
+  const exact = cakeImageFor(config); if (!exact) return;
+  const base = exact.replace(/-(frutas|flores|lisa)\.webp$/, '.webp');
   for (const suffix of ['', '-frutas', '-flores', '-lisa']) {
     const i = new Image(); i.decoding = 'async'; i.src = base.replace(/\.webp$/, `${suffix}.webp`);
   }
