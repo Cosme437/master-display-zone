@@ -23,3 +23,4 @@
 
 - Outer frosting travels in CakeConfig with a legacy ivory default; white, chocolate and naked are always selectable and the preview always shows one of the corrected photos in public/bolos (exact match via getCakeImage, otherwise the closest photo labelled as illustrative), because the user rejected the old variant photos.
 - Keep demo coupons (admin creates/activates, employees distribute, customers redeem their own) and menu promotions in browser-safe domain modules; promotions apply in the store's cart pricing so storefront, cart and checkout agree.
+- Demo stock is tracked as units per product and branch (default applies until set); simulated checkout subtracts units and zero units always means sold out.
