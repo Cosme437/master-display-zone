@@ -35,7 +35,7 @@ export function CakePreview({ config }: { config: CakeConfig }) {
       <div className="cake-measure"><span /> <p>{dimensions}</p> <span /></div>
       <div className="cake-height"><span />{config.tiers ?? 1} {config.tiers === 2 ? 'andares' : 'andar'}<span /></div>
     </div>
-    {!closestCakeImage(config).exact && config.frosting !== 'rose' && <p className="text-[11px] text-muted-foreground text-center">Foto ilustrativa mais próxima da sua escolha</p>}
+    <p className="text-[11px] text-muted-foreground text-center">{!closestCakeImage(config).exact && config.frosting !== 'rose' ? 'Foto ilustrativa mais próxima da sua escolha' : 'Imagem ilustrativa'}</p>
     <div className="studio-caption"><span className="eyebrow text-primary">Feito para celebrar</span><h2>Uma doce obra-prima.</h2><p>{config.dough} · {config.fillings.join(' + ') || 'Sem recheio selecionado'}</p><p>Cobertura · {cakeFrostingName(config)}</p></div>
     <div className="studio-specs"><span><Layers3 size={14}/>{config.tiers ?? 1} {config.tiers === 2 ? 'andares' : 'andar'}</span><span><Ruler size={14}/>{dimensions}</span>{config.edibleFlowers && <span><Flower2 size={14}/>Flores</span>}{config.redBerries && <span><Cherry size={14}/>Frutas vermelhas</span>}</div>
   </div>;
