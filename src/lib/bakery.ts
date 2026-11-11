@@ -92,19 +92,6 @@ export function cakePrice(config:CakeConfig) { return (cakeSizes.find(s=>s.size=
 export type CartItem = { id:string; name:string; description:string; price:number; image:string; quantity:number; cake?:CakeConfig; productId?:string; requiresPreparation?:boolean; preparation?:'fried'|'frozen' };
 export function refreshCatalogItems(items:CartItem[]):CartItem[] {return items.filter(i=>i.productId!=='coffee'&&i.id!=='coffee').map(i=>{if(i.cake)return i;const p=products.find(p=>p.id===(i.productId??i.id));return p?{...i,name:p.name,description:p.description,image:p.image}:i;});}
 export const subtotal = (items:CartItem[]) => items.reduce((sum,item)=>sum+item.price*item.quantity,0);
-/** Estimated cake weight in kg: base weight by size, second tier adds 60%. */
-export function cakeWeightKg(config:CakeConfig) { const base = config.size===15?1.2:config.size===20?2:3; return Math.round(base*((config.tiers??1)===2?1.6:1)*10)/10; }
-export const birthdayKit = { id:'kit-aniversario', name:'Kit Aniversário', description:'Velas, 20 pratos, garfos e facas, refrigerante 2 L, 25 docinhos e 25 salgados.', price:89.9 };
-export type CrowdLevel = 'VAZIO'|'MODERADO'|'CHEIO'|'LOTADO';
-export const crowdLabels: Record<CrowdLevel,string> = { VAZIO:'Vazia', MODERADO:'Movimento moderado', CHEIO:'Cheia', LOTADO:'Lotada' };
-/** Simulated store occupancy: busier at breakfast and late afternoon, varies per branch and changes every few minutes. */
-export function branchCrowd(branchId:string, at:Date = new Date()): { level:CrowdLevel; waitMinutes:number } {
-  const h = at.getHours() + at.getMinutes()/60; const peak = Math.max(0, 1-Math.abs(h-8)/2, 1-Math.abs(h-17.5)/2);
-  const seed = [...branchId].reduce((n,c)=>n+c.charCodeAt(0),0) + Math.floor(at.getTime()/300000);
-  const score = Math.min(1, Math.max(0, peak*0.85 + ((seed*37)%20)/100));
-  const level: CrowdLevel = score<0.25?'VAZIO':score<0.5?'MODERADO':score<0.75?'CHEIO':'LOTADO';
-  return { level, waitMinutes: Math.round(score*25) };
-}
 export const deliveryFee = (method:string) => method==='delivery'?12:0;
 export const pageHead = (title:string, description:string) => ({ meta:[{title:`${title} | Maison — Padaria & Doceria`},{name:'description',content:description},{property:'og:title',content:`${title} | Maison`},{property:'og:description',content:description},{property:'og:type',content:'website'},{name:'twitter:card',content:'summary_large_image'}] });
 /** Rebuilds the builder configuration that a catalog photo represents. */

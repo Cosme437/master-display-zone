@@ -16,7 +16,6 @@ import { Route as AvaliacoesRouteImport } from './routes/avaliacoes'
 import { Route as CarrinhoRouteImport } from './routes/carrinho'
 import { Route as MontarBoloRouteImport } from './routes/montar-bolo'
 import { Route as PedidosRouteImport } from './routes/pedidos'
-import { Route as PrivacidadeRouteImport } from './routes/privacidade'
 import { Route as PromocoesRouteImport } from './routes/promocoes'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as TestesRouteImport } from './routes/testes'
@@ -57,11 +56,6 @@ const MontarBoloRoute = MontarBoloRouteImport.update({
 const PedidosRoute = PedidosRouteImport.update({
   id: '/pedidos',
   path: '/pedidos',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PrivacidadeRoute = PrivacidadeRouteImport.update({
-  id: '/privacidade',
-  path: '/privacidade',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PromocoesRoute = PromocoesRouteImport.update({
@@ -108,7 +102,6 @@ export interface FileRoutesByFullPath {
   '/carrinho': typeof CarrinhoRoute
   '/montar-bolo': typeof MontarBoloRoute
   '/pedidos': typeof PedidosRoute
-  '/privacidade': typeof PrivacidadeRoute
   '/promocoes': typeof PromocoesRoute
   '/reset-password': typeof ResetPasswordRoute
   '/testes': typeof TestesRoute
@@ -124,7 +117,6 @@ export interface FileRoutesByTo {
   '/carrinho': typeof CarrinhoRoute
   '/montar-bolo': typeof MontarBoloRoute
   '/pedidos': typeof PedidosRoute
-  '/privacidade': typeof PrivacidadeRoute
   '/promocoes': typeof PromocoesRoute
   '/reset-password': typeof ResetPasswordRoute
   '/testes': typeof TestesRoute
@@ -142,7 +134,6 @@ export interface FileRoutesById {
   '/carrinho': typeof CarrinhoRoute
   '/montar-bolo': typeof MontarBoloRoute
   '/pedidos': typeof PedidosRoute
-  '/privacidade': typeof PrivacidadeRoute
   '/promocoes': typeof PromocoesRoute
   '/reset-password': typeof ResetPasswordRoute
   '/testes': typeof TestesRoute
@@ -160,7 +151,6 @@ export interface FileRouteTypes {
     | '/carrinho'
     | '/montar-bolo'
     | '/pedidos'
-    | '/privacidade'
     | '/promocoes'
     | '/reset-password'
     | '/testes'
@@ -176,7 +166,6 @@ export interface FileRouteTypes {
     | '/carrinho'
     | '/montar-bolo'
     | '/pedidos'
-    | '/privacidade'
     | '/promocoes'
     | '/reset-password'
     | '/testes'
@@ -193,7 +182,6 @@ export interface FileRouteTypes {
     | '/carrinho'
     | '/montar-bolo'
     | '/pedidos'
-    | '/privacidade'
     | '/promocoes'
     | '/reset-password'
     | '/testes'
@@ -211,7 +199,6 @@ export interface RootRouteChildren {
   CarrinhoRoute: typeof CarrinhoRoute
   MontarBoloRoute: typeof MontarBoloRoute
   PedidosRoute: typeof PedidosRoute
-  PrivacidadeRoute: typeof PrivacidadeRoute
   PromocoesRoute: typeof PromocoesRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   TestesRoute: typeof TestesRoute
@@ -266,13 +253,6 @@ declare module '@tanstack/react-router' {
       path: '/pedidos'
       fullPath: '/pedidos'
       preLoaderRoute: typeof PedidosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/privacidade': {
-      id: '/privacidade'
-      path: '/privacidade'
-      fullPath: '/privacidade'
-      preLoaderRoute: typeof PrivacidadeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/promocoes': {
@@ -352,7 +332,6 @@ const rootRouteChildren: RootRouteChildren = {
   CarrinhoRoute: CarrinhoRoute,
   MontarBoloRoute: MontarBoloRoute,
   PedidosRoute: PedidosRoute,
-  PrivacidadeRoute: PrivacidadeRoute,
   PromocoesRoute: PromocoesRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   TestesRoute: TestesRoute,
