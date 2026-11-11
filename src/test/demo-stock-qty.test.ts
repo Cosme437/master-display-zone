@@ -2,7 +2,7 @@ import {describe,it,expect} from 'vitest';
 import {consumeDemoStock,demoAvailability,demoStockQty,saveDemoStock,DEFAULT_STOCK_QTY,emptyDemoCatalog} from '@/lib/demo-catalog';
 import {products} from '@/lib/bakery';
 import {demoAccounts} from '@/lib/demo-accounts';
-const p=products[0];const admin=demoAccounts.find(a=>a.role==='admin')!;
+const p=products[0]!;const admin=demoAccounts.find(a=>a.role==='admin')!;
 const item=(q:number)=>({...p,productId:p.id,quantity:q}) as never;
 describe('estoque por unidades',()=>{
  it('começa com o estoque padrão',()=>expect(demoStockQty(p.id,'jardins',emptyDemoCatalog)).toBe(DEFAULT_STOCK_QTY));
