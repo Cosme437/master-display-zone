@@ -5,24 +5,24 @@ import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { CakePreview, cakePreviewImage, cakeCatalogImage, cakeDimensions } from '@/components/cake-preview';
 import { useBakery } from '@/components/bakery-store';
-import { cakePrice, cakeSizes, cakeFrostings, cakeFrostingName, supportsRoseFrosting, supportsFrosting, effectiveFrosting, money, pageHead, catalogCakes, catalogConfig, toggleFilling, type CakeConfig } from '@/lib/bakery';
+import { cakePrice, cakeSizes, cakeFrostings, cakeFrostingName, money, pageHead, catalogCakes, catalogConfig, type CakeConfig } from '@/lib/bakery';
 import { toast } from 'sonner';
+import { cakeOptionAvailability, snapCakeToPhoto } from '@/lib/cake-images';
 import { useRequireSignIn } from '@/components/use-signed-in';
 
 export const Route = createFileRoute('/montar-bolo')({ head: () => pageHead('Monte seu bolo', 'Crie seu bolo Maison: escolha formato, andares, massa, recheios, cobertura, flores e frutas em um ateliê de sabores.'), component: CakeBuilder });
-const showcase: CakeConfig = { shape: 'Coração', size: 20, dough: 'Red Velvet', fillings: ['Doce de Leite', 'Morango'], note: '', tiers: 2, edibleFlowers: true, redBerries: true, frosting: 'ivory' };
+const showcase: CakeConfig = { shape: 'Coração', size: 20, dough: 'Red Velvet', fillings: ['Creme de Baunilha'], note: '', tiers: 2, edibleFlowers: true, redBerries: true, frosting: 'naked' };
 
 function CakeBuilder() {
   const [config, setConfig] = useState<CakeConfig>(showcase);
   const store = useBakery(); const { require: requireSignIn } = useRequireSignIn();
-  const set = <K extends keyof CakeConfig>(key: K, value: CakeConfig[K]) => setConfig(c => {
-    const next = { ...c, [key]: value };
-    return next.frosting && !supportsFrosting(next, next.frosting) ? { ...next, frosting: 'ivory' } : next;
+  const available = cakeOptionAvailability(config);
+  const set = <K extends keyof CakeConfig>(key: K, value: CakeConfig[K]) => setConfig(c => snapCakeToPhoto({ ...c, [key]: value }));
+  const fill = (flavor: string) => setConfig(c => {
+    const toggled = c.fillings.includes(flavor) ? c.fillings.filter(f => f !== flavor) : [...c.fillings, flavor];
+    return snapCakeToPhoto({ ...c, fillings: toggled }, c.fillings.includes(flavor) ? undefined : flavor);
   });
-  const fill = (flavor: string) => {
-    if (!config.fillings.includes(flavor) && config.fillings.length === 2) toast.error('Escolha até 2 recheios. Remova um para trocar.');
-    set('fillings', toggleFilling(config.fillings, flavor));
-  };
+  const noPhoto = 'Não temos foto real desta combinação.';
   const addCake = () => {
     if (!requireSignIn()) return;
     store.add({ id: `cake-${Date.now()}`, name: 'Bolo personalizado', description: `${config.tiers} ${config.tiers === 2 ? 'andares' : 'andar'} · ${config.shape} · ${cakeDimensions(config)} · ${config.dough} · ${config.fillings.join(' + ')} · Cobertura ${cakeFrostingName(config)}${config.edibleFlowers ? ' · Flores' : ''}${config.redBerries ? ' · Frutas vermelhas' : ''}`, image: cakePreviewImage(config), price: cakePrice(config), cake: config });
@@ -36,11 +36,11 @@ function CakeBuilder() {
     <div className="page-width builder-layout">
       <div className="builder-controls">
         <div className="builder-controls-heading"><h2>Os detalhes fazem a diferença</h2><Button variant="ghost" size="icon" aria-label="Restaurar escolhas" title="Restaurar escolhas" onClick={() => setConfig(showcase)}><RotateCcw size={16}/></Button></div>
-        <section className="builder-section"><h3>Andares</h3><div className="pill-row">{([1, 2] as const).map(tier => <button key={tier} type="button" className="pill" aria-pressed={config.tiers === tier} onClick={() => set('tiers', tier)}>{tier} {tier === 1 ? 'andar' : 'andares'}</button>)}</div></section>
-        <section className="builder-section"><h3>Massa <small>Red Velvet + R$ 15</small></h3><div className="pill-row">{['Baunilha', 'Chocolate', 'Red Velvet'].map(dough => <button key={dough} type="button" className="pill" aria-pressed={config.dough === dough} onClick={() => set('dough', dough)}>{dough}</button>)}</div></section>
-        <section className="builder-section"><h3>Recheio <small>{config.fillings.length}/2 · + R$ 10 por sabor</small></h3><div className="pill-row">{['Brigadeiro', 'Doce de Leite', 'Creme de Baunilha', 'Morango'].map(flavor => <button key={flavor} type="button" className="pill" aria-pressed={config.fillings.includes(flavor)} onClick={() => fill(flavor)}>{flavor}</button>)}</div></section>
-        <section className="builder-section"><h3>Formato <small>Coração + R$ 20</small></h3><div className="pill-row">{['Redondo', 'Quadrado', 'Coração'].map(shape => <button key={shape} type="button" className="pill" aria-pressed={config.shape === shape} onClick={() => set('shape', shape)}>{shape}</button>)}</div></section>
-        <section className="builder-section"><h3>Cobertura</h3><div className="pill-row">{cakeFrostings.map(option => <button key={option.id} type="button" className="pill" aria-pressed={effectiveFrosting(config) === option.id} disabled={!supportsFrosting(config, option.id)} title={!supportsFrosting(config, option.id) ? 'Ainda não fotografada para esta combinação.' : option.name} onClick={() => set('frosting', option.id)}>{option.id === 'naked' ? 'Sem Cobertura (Naked)' : option.name}</button>)}</div></section>
+        <section className="builder-section"><h3>Andares</h3><div className="pill-row">{([1, 2] as const).map(tier => <button key={tier} type="button" className="pill" aria-pressed={config.tiers === tier} disabled={!available.tiers(tier)} title={available.tiers(tier) ? undefined : noPhoto} onClick={() => set('tiers', tier)}>{tier} {tier === 1 ? 'andar' : 'andares'}</button>)}</div></section>
+        <section className="builder-section"><h3>Massa <small>Red Velvet + R$ 15</small></h3><div className="pill-row">{['Baunilha', 'Chocolate', 'Red Velvet'].map(dough => <button key={dough} type="button" className="pill" aria-pressed={config.dough === dough} disabled={!available.dough(dough)} title={available.dough(dough) ? undefined : noPhoto} onClick={() => set('dough', dough)}>{dough}</button>)}</div></section>
+        <section className="builder-section"><h3>Recheio <small>{config.fillings.length}/2 · só combinações com foto real · + R$ 10 por sabor</small></h3><div className="pill-row">{['Brigadeiro', 'Doce de Leite', 'Creme de Baunilha', 'Morango'].map(flavor => <button key={flavor} type="button" className="pill" aria-pressed={config.fillings.includes(flavor)} disabled={!available.filling(flavor)} title={available.filling(flavor) ? undefined : noPhoto} onClick={() => fill(flavor)}>{flavor}</button>)}</div></section>
+        <section className="builder-section"><h3>Formato <small>Coração + R$ 20</small></h3><div className="pill-row">{['Redondo', 'Quadrado', 'Coração'].map(shape => <button key={shape} type="button" className="pill" aria-pressed={config.shape === shape} disabled={!available.shape(shape)} title={available.shape(shape) ? undefined : noPhoto} onClick={() => set('shape', shape)}>{shape}</button>)}</div></section>
+        <section className="builder-section"><h3>Cobertura</h3><div className="pill-row">{cakeFrostings.map(option => <button key={option.id} type="button" className="pill" aria-pressed={config.frosting === option.id} disabled={!available.frosting(option.id)} title={available.frosting(option.id) ? option.name : noPhoto} onClick={() => set('frosting', option.id)}>{option.id === 'naked' ? 'Sem Cobertura (Naked)' : option.name}</button>)}</div></section>
         <section className="builder-section"><h3>Tamanho <small>{cakeSizes.find(s => s.size === config.size)?.slices} fatias</small></h3><div className="pill-row">{([15, 20, 25] as const).map(size => <button key={size} type="button" className="pill" aria-pressed={config.size === size} onClick={() => set('size', size)}>{config.shape === 'Redondo' ? `Ø ${size} cm` : `${size} × ${size} cm`}</button>)}</div></section>
         <section className="builder-section"><h3>Decoração</h3><div className="pill-row">{([{key:'redBerries',name:'Frutas Vermelhas'},{key:'edibleFlowers',name:'Flores'}] as const).map(o => <button key={o.key} type="button" className="pill" aria-pressed={Boolean(config[o.key])} onClick={() => set(o.key, !config[o.key])}>{o.name}</button>)}</div></section>
         <details className="builder-more"><summary>Uma mensagem especial <ChevronDown size={14}/></summary><label htmlFor="cake-note" className="block text-xs mt-4 mb-2">Mensagem ou observação</label><textarea id="cake-note" className="form-field min-h-20" maxLength={300} value={config.note} onChange={e => set('note', e.target.value)} placeholder="Uma mensagem para um dia especial…"/></details>
