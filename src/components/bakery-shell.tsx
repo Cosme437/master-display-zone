@@ -1,9 +1,9 @@
 import { Link, useLocation } from '@tanstack/react-router';
 import { ArrowRight, Check, ChevronDown, Croissant, Heart, MapPin, MessageCircle, Navigation, ShoppingBag, UserRound, Wheat, X } from 'lucide-react';
-import { useState, type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
-import { branches } from '@/lib/bakery';
+import { branchCrowd, branches, crowdLabels } from '@/lib/bakery';
 import { useBakery } from './bakery-store';
 import { toast } from 'sonner';
 import { useAccount } from './account-provider';
