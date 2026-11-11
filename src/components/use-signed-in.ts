@@ -7,6 +7,6 @@ import { useBakery } from './bakery-store';
 export function useRequireSignIn() {
   const { user } = useAccount(); const store = useBakery(); const navigate = useNavigate();
   const signedIn = Boolean(user || store.demoAccount);
-  const require = () => { if (signedIn) return true; toast('Entre na sua conta para fazer pedidos.'); void navigate({ to: '/auth' }); return false; };
+  const require = () => { if (signedIn) return true; toast.error('Você precisa estar logado',{description:'Entre na sua conta para fazer pedidos.'}); void navigate({ to: '/auth' }); return false; };
   return { signedIn, require };
 }
