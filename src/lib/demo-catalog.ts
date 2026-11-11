@@ -3,7 +3,7 @@ import type {CartItem} from './bakery';
 import {products} from './bakery';
 import {campaignSchema,emptyCatalog,productAvailability,type CatalogSettings} from './store-catalog';
 import type {DemoAccount} from './demo-accounts';
-export type DemoProductSetting={productId:string;branchId:string;price:number;hidden:boolean;stock_status:'DISPONIVEL'|'ESGOTADO'|'EM_PRODUCAO';campaign_id:string|null;stock_qty?:number};
+export type DemoProductSetting={productId:string;branchId:string;price:number;hidden:boolean;stock_status:'DISPONIVEL'|'ESGOTADO'|'EM_PRODUCAO';campaign_id:string|null;stock_qty?:number|undefined};
 export type DemoCatalog={products:DemoProductSetting[];campaigns:CatalogSettings['campaigns']};
 export const emptyDemoCatalog:DemoCatalog={products:[],campaigns:[]};
 export const demoProductSchema=z.object({productId:z.string().min(1),branchId:z.enum(['jardins','pinheiros','moema']),price:z.number().finite().positive().max(1000000).refine(n=>Math.abs(n*100-Math.round(n*100))<0.000001,'Use no máximo duas casas decimais.'),hidden:z.boolean(),stock_status:z.enum(['DISPONIVEL','ESGOTADO','EM_PRODUCAO']),campaign_id:z.string().nullable(),stock_qty:z.number().int().min(0).max(100000).optional()});
